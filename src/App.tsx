@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ShoppingCart, User, Send } from 'lucide-react';
 import ProductCard from './components/ProductCard';
+import CartDrawer from './components/CartDrawer';
 import type { Product, Message } from './types/types';
 
 const MOCK_PRODUCTS: Product[] = [
@@ -81,7 +82,6 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen w-full bg-gray-100">
-      {/* 1. BARRA SUPERIOR (NAVBAR) */}
       <header className="flex items-center justify-between px-6 py-4 bg-white shadow-sm border-b">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
@@ -95,16 +95,15 @@ function App() {
             <User size={20} />
             <span className="font-medium">Juan Perez</span>
           </div>
-          <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
+          <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors" onClick={() => setIsCartOpen(true)}>
             <ShoppingCart size={24} />
             <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-              0
+              {cart.length}
             </span>
           </button>
         </div>
       </header>
 
-      {/* 2. SECCIÓN CENTRAL (CHAT & PRODUCTOS) */}
       <main className="flex-1 overflow-y-auto p-4 md:px-20 lg:px-40 space-y-4">
         {
           messages.map((msg) => (
@@ -126,7 +125,7 @@ function App() {
                     <ProductCard 
                       key={product.id} 
                       product={product} 
-                      onAddToCart={(p) => console.log("Agregado:", p.name)}
+                      onAddToCart={(p) => addToCart(p)}
                       onViewDetail={(p) => alert(`Abriendo detalle de: ${p.name}`)}
                     />
                   ))}
@@ -139,7 +138,6 @@ function App() {
         <div ref={messagesEndRef} />
       </main>
 
-      {/* 3. BARRA DE TEXTO (INPUT) */}
       <footer className="p-4 bg-white border-t">
         <form 
           onSubmit={handleSendMessage}
@@ -164,6 +162,8 @@ function App() {
           Gemini puede cometer errores. Revisa la información importante.
         </p>
       </footer>
+
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} items={cart} onRemove={removeFromCart} />
     </div>
   )
 }
