@@ -1,27 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ShoppingCart, User, Send } from 'lucide-react';
+import ProductCard from './components/ProductCard';
+import type { Product, Message } from './types/types';
 
-interface Message {
-  id: number;
-  text: string;
-  sender: 'user' | 'bot';
-}
+const MOCK_PRODUCTS: Product[] = [
+  {
+    id: 1,
+    name: "MacBook Pro M3",
+    price: 1999,
+    image: "https://images.unsplash.com/photo-1517336714460-d1306604297e?auto=format&fit=crop&q=80&w=400",
+    description: "El laptop más potente para profesionales con el chip M3 de Apple."
+  },
+  {
+    id: 2,
+    name: "MacBook Pro M3",
+    price: 1999,
+    image: "https://images.unsplash.com/photo-1517336714460-d1306604297e?auto=format&fit=crop&q=80&w=400",
+    description: "El laptop más potente para profesionales con el chip M3 de Apple."
+  },
+  {
+    id: 3,
+    name: "MacBook Pro M3",
+    price: 1999,
+    image: "https://images.unsplash.com/photo-1517336714460-d1306604297e?auto=format&fit=crop&q=80&w=400",
+    description: "El laptop más potente para profesionales con el chip M3 de Apple."
+  },
+  {
+    id: 4,
+    name: "MacBook Pro M3",
+    price: 1999,
+    image: "https://images.unsplash.com/photo-1517336714460-d1306604297e?auto=format&fit=crop&q=80&w=400",
+    description: "El laptop más potente para profesionales con el chip M3 de Apple."
+  }
+];
 
 function App() {
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, text: "¡Hola! Soy tu asistente de compras con IA. ¿En qué puedo ayudarte hoy?", sender: 'bot' }
+    { id: 1, text: "¡Hola! Soy tu asistente de compras con IA. ¿En qué puedo ayudarte hoy?", sender: 'bot', timestamp: new Date() }
   ]);
 
   const [inputText, setInputText] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    console.log("Scrolling to bottom");
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim()) return;
     
-    const newMessage: Message = { id: Date.now(), text: inputText, sender: 'user' };
+    const newMessage: Message = { id: Date.now(), text: inputText, sender: 'user', timestamp: new Date() };
     setMessages([...messages, newMessage]);
     setInputText("");
-    // Aquí luego conectaremos con Gemini
   };
 
   return (
@@ -51,18 +87,37 @@ function App() {
 
       {/* 2. SECCIÓN CENTRAL (CHAT & PRODUCTOS) */}
       <main className="flex-1 overflow-y-auto p-4 md:px-20 lg:px-40 space-y-4">
-        {messages.map((msg) => (
-          <div key={msg.id} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[80%] p-3 rounded-2xl shadow-sm ${
-              msg.sender === 'user' 
-                ? 'bg-blue-600 text-white rounded-tr-none' 
-                : 'bg-white text-gray-800 rounded-tl-none border border-gray-200'
-            }`}>
-              <p>{msg.text}</p>
+        {
+          messages.map((msg) => (
+            <div key={msg.id} className="space-y-4">
+              <div className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] p-3 rounded-2xl shadow-sm ${
+                  msg.sender === 'user' 
+                    ? 'bg-blue-600 text-white rounded-tr-none' 
+                    : 'bg-white text-gray-800 rounded-tl-none border border-gray-200'
+                }`}>
+                  <p>{msg.text}</p>
+                </div>
+              </div>
+
+              {/* Si el mensaje es del bot y es una recomendación (Simulado) */}
+              {msg.sender === 'bot' && msg.id === 1 && (
+                <div className="flex flex-wrap gap-4 justify-start pl-4">
+                  {MOCK_PRODUCTS.map(product => (
+                    <ProductCard 
+                      key={product.id} 
+                      product={product} 
+                      onAddToCart={(p) => console.log("Agregado:", p.name)}
+                      onViewDetail={(p) => alert(`Abriendo detalle de: ${p.name}`)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-        ))}
-        {/* Aquí renderizaremos los productos en el paso 3 */}
+          ))
+        }
+
+        <div ref={messagesEndRef} />
       </main>
 
       {/* 3. BARRA DE TEXTO (INPUT) */}
