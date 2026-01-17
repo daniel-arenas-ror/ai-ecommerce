@@ -35,6 +35,13 @@ const MOCK_PRODUCTS: Product[] = [
 ];
 
 function App() {
+  const [cart, setCart] = useState<Product[]>(() => {
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, text: "¡Hola! Soy tu asistente de compras con IA. ¿En qué puedo ayudarte hoy?", sender: 'bot', timestamp: new Date() }
   ]);
@@ -51,6 +58,10 @@ function App() {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim()) return;
@@ -58,6 +69,14 @@ function App() {
     const newMessage: Message = { id: Date.now(), text: inputText, sender: 'user', timestamp: new Date() };
     setMessages([...messages, newMessage]);
     setInputText("");
+  };
+
+  const addToCart = (product: Product) => {
+    setCart((prev) => [...prev, product]);
+  };
+
+  const removeFromCart = (productId: number) => {
+    setCart((prev) => prev.filter(p => p.id !== productId));
   };
 
   return (
