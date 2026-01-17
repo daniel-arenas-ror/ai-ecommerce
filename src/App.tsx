@@ -14,21 +14,21 @@ const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: 2,
-    name: "MacBook Pro M3",
+    name: "iPhone 15 Pro",
     price: 1999,
     image: "https://images.unsplash.com/photo-1517336714460-d1306604297e?auto=format&fit=crop&q=80&w=400",
     description: "El laptop más potente para profesionales con el chip M3 de Apple."
   },
   {
     id: 3,
-    name: "MacBook Pro M3",
+    name: "iPad Pro M3",
     price: 1999,
     image: "https://images.unsplash.com/photo-1517336714460-d1306604297e?auto=format&fit=crop&q=80&w=400",
     description: "El laptop más potente para profesionales con el chip M3 de Apple."
   },
   {
     id: 4,
-    name: "MacBook Pro M3",
+    name: "MacBook Air M3",
     price: 1999,
     image: "https://images.unsplash.com/photo-1517336714460-d1306604297e?auto=format&fit=crop&q=80&w=400",
     description: "El laptop más potente para profesionales con el chip M3 de Apple."
@@ -51,7 +51,6 @@ function App() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    console.log("Scrolling to bottom");
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
