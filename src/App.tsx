@@ -8,8 +8,8 @@ import { createSubscription, sendMessage, unsubscribe } from './service/actionCa
 
 function App() {
   const assistantSlug = "laura-5";
-  //const [conversationId, setConversationId] = useState<string | null>(null);
-  const [conversationId, setConversationId] = useState<string | null>("170");
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  //const [conversationId, setConversationId] = useState<string | null>("170");
   const [cart, setCart] = useState<Product[]>(() => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
@@ -161,7 +161,7 @@ function App() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 text-gray-600 border-r pr-4">
             <User size={20} />
-            <span className="font-medium">Juan Perez</span>
+            <span className="font-medium">Daniel Arenas</span>
           </div>
           <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors" onClick={() => setIsCartOpen(true)}>
             <ShoppingCart size={24} />
@@ -194,7 +194,7 @@ function App() {
                       key={product.id} 
                       product={product} 
                       onAddToCart={(p) => addToCart(p)}
-                      onViewDetail={(p) => alert(`Abriendo detalle de: ${p.name}`)}
+                      onViewDetail={(p) => window.open(p.url, p.name)}
                     />
                   ))}
                 </div>

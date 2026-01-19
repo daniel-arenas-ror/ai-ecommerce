@@ -1,5 +1,3 @@
-import React from 'react';
-
 const TypingIndicator = () => {
   return (
     <div className="flex justify-start mb-4 animate-in fade-in duration-300">
