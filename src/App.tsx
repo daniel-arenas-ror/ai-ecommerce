@@ -79,6 +79,9 @@ function App() {
 
               newAssistantMessage.products = [];
               break;
+            case 'start_purchase':
+              alert("Iniciando proceso de compra...");
+              break;
           }
 
           console.log("New assistant message:", newAssistantMessage);
