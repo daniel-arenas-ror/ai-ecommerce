@@ -1,6 +1,6 @@
 import { createConsumer, type Cable, type Subscription } from '@rails/actioncable';
 
-const BACKEND_URL = process.env.BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 if (!BACKEND_URL) {
   throw new Error("Backend URL not found. Please set the BACKEND_URL environment variable to use Action Cable.");
@@ -52,7 +52,7 @@ export const createSubscription = (
         console.log('Action Cable disconnected.');
         callbacks.onDisconnected?.();
       },
-      received(data) {
+      received(data: any) {
         console.log('Action Cable received:', data);
         callbacks.onReceived(data);
       },

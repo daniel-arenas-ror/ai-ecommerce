@@ -3,7 +3,7 @@ import { ShoppingCart, User, Send } from 'lucide-react';
 import ProductCard from './components/ProductCard';
 import CartDrawer from './components/CartDrawer';
 import type { Product, Message } from './types/types';
-import { createSubscription, sendMessage, unsubscribe } from './services/ActionCableService';
+import { createSubscription, sendMessage, unsubscribe } from './service/actionCableService';
 
 const MOCK_PRODUCTS: Product[] = [
   {
@@ -37,7 +37,7 @@ const MOCK_PRODUCTS: Product[] = [
 ];
 
 function App() {
-  const assistantSlug = "ecommerce-assistant";
+  const assistantSlug = "laura-5";
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [cart, setCart] = useState<Product[]>(() => {
     const savedCart = localStorage.getItem('cart');
