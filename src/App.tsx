@@ -3,6 +3,7 @@ import { ShoppingCart, User, Send } from 'lucide-react';
 import ProductCard from './components/ProductCard';
 import CartDrawer from './components/CartDrawer';
 import type { Product, Message } from './types/types';
+import { createSubscription, sendMessage, unsubscribe } from './services/ActionCableService';
 
 const MOCK_PRODUCTS: Product[] = [
   {
@@ -36,6 +37,8 @@ const MOCK_PRODUCTS: Product[] = [
 ];
 
 function App() {
+  const assistantSlug = "ecommerce-assistant";
+  const [conversationId, setConversationId] = useState<string | null>(null);
   const [cart, setCart] = useState<Product[]>(() => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
@@ -78,6 +81,23 @@ function App() {
   const removeFromCart = (productId: number) => {
     setCart((prev) => prev.filter(p => p.id !== productId));
   };
+
+  useEffect(() => {
+    const handleReceiveDate = (data: {id: string, type: string, content?: string, message?: string}) => {
+      switch(data.type) {
+        case 'answered_message':
+          break;
+        case 'user_message_added':
+          break;
+      }
+    }
+
+    createSubscription(assistantSlug, conversationId, {
+      onReceived: handleReceiveDate
+    });
+
+    return () => { unsubscribe(); };
+  }, []);
 
   return (
     <div className="flex flex-col h-screen w-full bg-gray-100">
