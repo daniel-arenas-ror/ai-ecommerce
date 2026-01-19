@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ShoppingCart, User, Send } from 'lucide-react';
 import ProductCard from './components/ProductCard';
 import CartDrawer from './components/CartDrawer';
+import TypingIndicator from './components/TypingIndicator';
 import type { Product, Message } from './types/types';
 import { createSubscription, sendMessage, unsubscribe } from './service/actionCableService';
 
@@ -13,7 +14,7 @@ function App() {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
-
+  const [isTyping, setIsTyping] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -51,6 +52,12 @@ function App() {
   useEffect(() => {
     const handleReceiveDate = (data: {id: number, type: string, content: string, message?: string, messages?: Array<any>}) => {
       switch(data.type) {
+        case 'typing_start':
+          setIsTyping(true);
+          break;
+        case 'typing_end':
+          setIsTyping(false);
+          break;
         case 'answered_message':
           console.log("Answered message received:", data);
 
@@ -193,6 +200,7 @@ function App() {
           ))
         }
 
+        {isTyping && <TypingIndicator />}
         <div ref={messagesEndRef} />
       </main>
 
