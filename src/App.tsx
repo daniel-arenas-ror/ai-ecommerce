@@ -63,7 +63,18 @@ function App() {
             command: parsedContent.command,
             sender: 'assistant'
           };
+          
+          switch(newAssistantMessage.command) {
+            case 'add_cart':
+              parsedContent.products.forEach((product: Product) => {
+                addToCart(product);
+              });
 
+              newAssistantMessage.products = [];
+              break;
+          }
+
+          console.log("New assistant message:", newAssistantMessage);
           setMessages((prevMessages) => [...prevMessages, newAssistantMessage]);
 
           break;
@@ -93,6 +104,12 @@ function App() {
                 text = parsedContent.text;
                 products = parsedContent.products;
                 command = parsedContent.command;
+
+                switch(command) {
+                case 'add_cart':
+                  products = [];
+                  break;
+                }
 
               } else if(message.role === 'user'){
                 text = message.content;
