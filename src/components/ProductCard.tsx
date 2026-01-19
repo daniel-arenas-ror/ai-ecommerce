@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShoppingCart, ExternalLink } from 'lucide-react';
 import type { Product } from '../types/types';
+import { motion } from 'framer-motion';
 
 interface ProductCardProps {
   product: Product;
@@ -9,6 +10,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewDetail }) => {
+
   return (
     <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow w-full max-w-sm">
       {/* Imagen del producto */}
@@ -32,13 +34,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
 
         {/* Acciones */}
         <div className="flex gap-2 mt-auto">
-          <button 
+          <motion.button
+            whileTap={{ scale: 0.95 }}
             onClick={() => onAddToCart(product)}
             className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors"
           >
             <ShoppingCart size={18} />
             Agregar
-          </button>
+          </motion.button>
           <button 
             onClick={() => onViewDetail(product)}
             className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors"

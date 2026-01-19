@@ -94,6 +94,12 @@ function App() {
             case 'start_purchase':
               alert("Iniciando proceso de compra...");
               break;
+            case 'view_detail':
+              if(parsedContent.products.length > 0) {
+                const product = parsedContent.products[0];
+                window.open(product.url, product.name);
+              }
+              break;
           }
 
           console.log("New assistant message:", newAssistantMessage);
