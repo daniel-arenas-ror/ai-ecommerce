@@ -5,11 +5,13 @@ import CartDrawer from './components/CartDrawer';
 import TypingIndicator from './components/TypingIndicator';
 import type { Product, Message } from './types/types';
 import { createSubscription, sendMessage, unsubscribe } from './service/actionCableService';
+import { motion, useAnimation } from 'framer-motion';
 
 function App() {
   const assistantSlug = "laura-5";
-  const [conversationId, setConversationId] = useState<string | null>(null);
-  //const [conversationId, setConversationId] = useState<string | null>("170");
+  const controls = useAnimation();
+  //const [conversationId, setConversationId] = useState<string | null>(null);
+  const [conversationId, setConversationId] = useState<string | null>("174");
   const [cart, setCart] = useState<Product[]>(() => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
@@ -43,10 +45,20 @@ function App() {
 
   const addToCart = (product: Product) => {
     setCart((prev) => [...prev, product]);
+
+    controls.start({
+      scale: [1, 1.3, 1],
+      transition: { duration: 0.4 }
+    });
   };
 
   const removeFromCart = (productId: number) => {
     setCart((prev) => prev.filter(p => p.id !== productId));
+
+    controls.start({
+      scale: [1, 1.3, 1],
+      transition: { duration: 0.4 }
+    });
   };
 
   useEffect(() => {
@@ -163,12 +175,16 @@ function App() {
             <User size={20} />
             <span className="font-medium">Daniel Arenas</span>
           </div>
-          <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors" onClick={() => setIsCartOpen(true)}>
+          <motion.button
+            animate={controls}
+            onClick={() => setIsCartOpen(true)}
+            className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+          >
             <ShoppingCart size={24} />
             <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
               {cart.length}
             </span>
-          </button>
+          </motion.button>
         </div>
       </header>
 
