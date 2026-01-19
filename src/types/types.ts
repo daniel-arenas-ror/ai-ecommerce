@@ -1,10 +1,10 @@
 export interface Message {
   id: number;
   text: string;
-  sender: 'user' | 'bot';
-  timestamp: Date;
+  products: Product[] | [];
+  sender: 'user' | 'assistant';
+  command: string;
 }
-
 export interface Product {
   id: number;
   name: string;

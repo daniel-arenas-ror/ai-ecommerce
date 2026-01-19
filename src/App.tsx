@@ -5,50 +5,17 @@ import CartDrawer from './components/CartDrawer';
 import type { Product, Message } from './types/types';
 import { createSubscription, sendMessage, unsubscribe } from './service/actionCableService';
 
-const MOCK_PRODUCTS: Product[] = [
-  {
-    id: 1,
-    name: "MacBook Pro M3",
-    price: 1999,
-    image: "https://images.unsplash.com/photo-1517336714460-d1306604297e?auto=format&fit=crop&q=80&w=400",
-    description: "El laptop más potente para profesionales con el chip M3 de Apple."
-  },
-  {
-    id: 2,
-    name: "iPhone 15 Pro",
-    price: 1999,
-    image: "https://images.unsplash.com/photo-1517336714460-d1306604297e?auto=format&fit=crop&q=80&w=400",
-    description: "El laptop más potente para profesionales con el chip M3 de Apple."
-  },
-  {
-    id: 3,
-    name: "iPad Pro M3",
-    price: 1999,
-    image: "https://images.unsplash.com/photo-1517336714460-d1306604297e?auto=format&fit=crop&q=80&w=400",
-    description: "El laptop más potente para profesionales con el chip M3 de Apple."
-  },
-  {
-    id: 4,
-    name: "MacBook Air M3",
-    price: 1999,
-    image: "https://images.unsplash.com/photo-1517336714460-d1306604297e?auto=format&fit=crop&q=80&w=400",
-    description: "El laptop más potente para profesionales con el chip M3 de Apple."
-  }
-];
-
 function App() {
   const assistantSlug = "laura-5";
-  const [conversationId, setConversationId] = useState<string | null>(null);
+  //const [conversationId, setConversationId] = useState<string | null>(null);
+  const [conversationId, setConversationId] = useState<string | null>("170");
   const [cart, setCart] = useState<Product[]>(() => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
   const [isCartOpen, setIsCartOpen] = useState(false);
-
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 1, text: "¡Hola! Soy tu asistente de compras con IA. ¿En qué puedo ayudarte hoy?", sender: 'bot', timestamp: new Date() }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const [inputText, setInputText] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -68,9 +35,8 @@ function App() {
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim()) return;
-    
-    const newMessage: Message = { id: Date.now(), text: inputText, sender: 'user', timestamp: new Date() };
-    setMessages([...messages, newMessage]);
+
+    sendMessage(assistantSlug, conversationId!, inputText);
     setInputText("");
   };
 
@@ -83,11 +49,67 @@ function App() {
   };
 
   useEffect(() => {
-    const handleReceiveDate = (data: {id: string, type: string, content?: string, message?: string}) => {
+    const handleReceiveDate = (data: {id: number, type: string, content: string, message?: string, messages?: Array<any>}) => {
       switch(data.type) {
         case 'answered_message':
+          console.log("Answered message received:", data);
+
+          const parsedContent = JSON.parse(data.content.replace('```json', '').replace('```', ''));
+
+          const newAssistantMessage: Message = {
+            id: data.id,
+            text: parsedContent.text,
+            products: parsedContent.products,
+            command: parsedContent.command,
+            sender: 'assistant'
+          };
+
+          setMessages((prevMessages) => [...prevMessages, newAssistantMessage]);
+
           break;
         case 'user_message_added':
+          console.log("Answered message received:", data);
+          const newMessage: Message = {
+            id: data.id,
+            text: data.content || "",
+            products: [],
+            sender: 'user',
+            command: 'text'
+          };
+
+          setMessages((prevMessages) => [...prevMessages, newMessage]);
+          break;
+        case 'initial_load':
+          setConversationId(data.content)
+
+          if(data.messages) {
+            const messages = data.messages.map(message => {
+              let text = "";
+              let products: Product[] = [];
+              let command = "text"
+
+              if(message.role === 'assistant'){
+                const parsedContent = JSON.parse(message.content.replace('```json', '').replace('```', ''));
+                text = parsedContent.text;
+                products = parsedContent.products;
+                command = parsedContent.command;
+
+              } else if(message.role === 'user'){
+                text = message.content;
+              }
+
+              return {
+                id: message.id,
+                text: text,
+                products: products,
+                sender: message.role,
+                command: command
+              };
+            });
+
+            setMessages(messages);
+          }
+
           break;
       }
     }
@@ -138,9 +160,9 @@ function App() {
               </div>
 
               {/* Si el mensaje es del bot y es una recomendación (Simulado) */}
-              {msg.sender === 'bot' && msg.id === 1 && (
+              {msg.sender === 'assistant' && msg.products.length > 0 && (
                 <div className="flex flex-wrap gap-4 justify-start pl-4">
-                  {MOCK_PRODUCTS.map(product => (
+                  {msg.products.map(product => (
                     <ProductCard 
                       key={product.id} 
                       product={product} 
