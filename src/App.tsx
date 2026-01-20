@@ -10,8 +10,8 @@ import { motion, useAnimation } from 'framer-motion';
 function App() {
   const assistantSlug = "laura-5";
   const controls = useAnimation();
-  //const [conversationId, setConversationId] = useState<string | null>(null);
-  const [conversationId, setConversationId] = useState<string | null>("174");
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  //const [conversationId, setConversationId] = useState<string | null>("174");
   const [cart, setCart] = useState<Product[]>(() => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
@@ -71,6 +71,7 @@ function App() {
       switch(data.type) {
         case 'typing_start':
           setIsTyping(true);
+          scrollToBottom();
           break;
         case 'typing_end':
           setIsTyping(false);
@@ -258,7 +259,7 @@ function App() {
           </button>
         </form>
         <p className="text-center text-[10px] text-gray-400 mt-2">
-          Gemini puede cometer errores. Revisa la información importante.
+          E-commerce Desarrollador por <a href="https://www.linkedin.com/in/dev-darenas/" target="_blank" rel="noopener noreferrer">Daniel Arenas</a>
         </p>
       </footer>
 
