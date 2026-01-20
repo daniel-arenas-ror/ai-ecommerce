@@ -1,14 +1,17 @@
 import { X, Trash2 } from 'lucide-react';
-import type { Product } from '../types/types';
+import type { Product, Coupon } from '../types/types';
+import { motion } from 'framer-motion';
 
 interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   items: Product[];
+  coupon: Coupon[];
   onRemove: (id: number) => void;
+  startPurchase: () => void;
 }
 
-const CartDrawer = ({ isOpen, onClose, items, onRemove }: CartDrawerProps) => {
+const CartDrawer = ({ isOpen, onClose, items, coupon, onRemove, startPurchase }: CartDrawerProps) => {
   if (!isOpen) return null;
 
   return (
@@ -47,12 +50,26 @@ const CartDrawer = ({ isOpen, onClose, items, onRemove }: CartDrawerProps) => {
 
         <div className="p-4 border-t bg-gray-50">
           <div className="flex justify-between text-xl font-bold mb-4">
-            <span>Total:</span>
+            <span>Descuentos:</span>
+            {
+              coupon.length > 0 && (<span className="text-green-600">- ${coupon.reduce((acc, c) => acc + c.discount, 0)}</span>)
+            }
+          </div>
+          <div className="flex justify-between text-xl font-bold mb-4">
+            <span>Sub. Total:</span>
             <span>${items.reduce((acc, item) => acc + item.price, 0)}</span>
           </div>
-          <button className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors">
+          <div className="flex justify-between text-xl font-bold mb-4">
+            <span>Total:</span>
+            <span>${items.reduce((acc, item) => acc + item.price, 0) - (coupon.length > 0 ? coupon.reduce((acc, c) => acc + c.discount, 0) : 0)}</span>
+          </div>
+          <motion.button
+            className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors"
+            whileTap={{ scale: 0.95 }}
+            onClick={startPurchase}
+          >
             Finalizar Compra
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

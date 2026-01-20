@@ -3,7 +3,7 @@ import { ShoppingCart, User, Send } from 'lucide-react';
 import ProductCard from './components/ProductCard';
 import CartDrawer from './components/CartDrawer';
 import TypingIndicator from './components/TypingIndicator';
-import type { Product, Message } from './types/types';
+import type { Product, Message, Coupon } from './types/types';
 import { createSubscription, sendMessage, unsubscribe } from './service/actionCableService';
 import { motion, useAnimation } from 'framer-motion';
 
@@ -16,6 +16,7 @@ function App() {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  const [coupon, setCoupon] = useState<Coupon[]>([{ code: 'DESCUENTO10', discount: 10 }]);
   const [isTyping, setIsTyping] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -61,6 +62,10 @@ function App() {
     });
   };
 
+  const startPurchase = () => {
+    alert("Iniciando proceso de compra...");
+  };
+
   useEffect(() => {
     const handleReceiveDate = (data: {id: number, type: string, content: string, message?: string, messages?: Array<any>}) => {
       switch(data.type) {
@@ -92,13 +97,16 @@ function App() {
               newAssistantMessage.products = [];
               break;
             case 'start_purchase':
-              alert("Iniciando proceso de compra...");
+              startPurchase();
               break;
             case 'view_detail':
               if(parsedContent.products.length > 0) {
                 const product = parsedContent.products[0];
                 window.open(product.url, product.name);
               }
+              break;
+            case 'apply_coupon':
+
               break;
           }
 
@@ -254,7 +262,14 @@ function App() {
         </p>
       </footer>
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} items={cart} onRemove={removeFromCart} />
+      <CartDrawer
+        coupon={coupon}
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        items={cart}
+        onRemove={removeFromCart}
+        startPurchase={startPurchase}
+      />
     </div>
   )
 }

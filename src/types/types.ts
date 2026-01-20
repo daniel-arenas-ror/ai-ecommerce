@@ -13,3 +13,8 @@ export interface Product {
   description: string;
   url: string;
 }
+
+export interface Coupon {
+  code: string;
+  discount: number;
+}
