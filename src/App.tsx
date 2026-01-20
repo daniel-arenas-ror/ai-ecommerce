@@ -16,7 +16,7 @@ function App() {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
-  const [coupon, setCoupon] = useState<Coupon[]>([{ code: 'DESCUENTO10', discount: 10 }]);
+  const [coupon, setCoupon] = useState<Coupon[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -106,7 +106,7 @@ function App() {
               }
               break;
             case 'apply_coupon':
-
+              setCoupon((prev) => [...prev, { code: "DISCOUNT", discount: 10 }]);
               break;
           }
 
