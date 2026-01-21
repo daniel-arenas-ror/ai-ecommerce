@@ -49,6 +49,14 @@ const CartDrawer = ({ isOpen, onClose, items, coupon, onRemove, startPurchase }:
         </div>
 
         <div className="p-4 border-t bg-gray-50">
+            {
+              coupon.map((c, index) => (
+                <div key={`${c.code}-${index}`} className="flex justify-between w-full">
+                  <span className="text-green-600">{c.code}:</span>
+                  <span className="text-green-600">- ${c.discount}</span>
+                </div>
+              ))
+            }
           <div className="flex justify-between text-xl font-bold mb-4">
             <span>Descuentos:</span>
             {
