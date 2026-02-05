@@ -1,3 +1,4 @@
+import { GoogleOAuthProvider, useGoogleOneTapLogin, CredentialResponse } from '@react-oauth/google';
 import React, { useState, useRef, useEffect } from 'react';
 import { ShoppingCart, User, Send } from 'lucide-react';
 import ProductCard from './components/ProductCard';
@@ -7,15 +8,40 @@ import type { Product, Message, Coupon } from './types/types';
 import { createSubscription, sendMessage, unsubscribe } from './service/actionCableService';
 import { motion, useAnimation } from 'framer-motion';
 
+const OneTapLogin = () => {
+  useGoogleOneTapLogin({
+    onSuccess: (credentialResponse: CredentialResponse) => {
+      // The 'credential' field is the JWT token from Google
+      const token = credentialResponse.credential;
+      
+      // Send this token to your Rails backend
+      fetch('http://localhost:3000/api/v1/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      })
+      .then(res => res.json())
+      .then(data => console.log("Backend Response:", data))
+      .catch(err => console.error("Login failed:", err));
+    },
+    onError: () => {
+      console.log('One Tap Login Failed');
+    },
+  });
+
+  return null; // One Tap is an overlay; no UI element is strictly required
+};
+
 function App() {
   const assistantSlug = "laura-5";
   const controls = useAnimation();
-  const [conversationId, setConversationId] = useState<string | null>(null);
-  //const [conversationId, setConversationId] = useState<string | null>("174");
+  //const [conversationId, setConversationId] = useState<string | null>(null);
+  const [conversationId, setConversationId] = useState<string | null>("203");
   const [cart, setCart] = useState<Product[]>(() => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  //const [coupon, setCoupon] = useState<Coupon[]>([{ code: "DISCOUNT", discount: 10 }]);
   const [coupon, setCoupon] = useState<Coupon[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -128,6 +154,8 @@ function App() {
           setMessages((prevMessages) => [...prevMessages, newMessage]);
           break;
         case 'initial_load':
+
+          console.log("Initial load data:", data);
           setConversationId(data.content)
 
           if(data.messages) {
