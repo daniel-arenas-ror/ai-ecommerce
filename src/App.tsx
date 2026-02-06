@@ -12,7 +12,6 @@ import { motion, useAnimation } from 'framer-motion';
 const OneTapLogin = () => {
   useGoogleOneTapLogin({
     onSuccess: (credentialResponse: CredentialResponse) => {
-      // The 'credential' field is the JWT token from Google
       const token = credentialResponse.credential;
       
       // Send this token to your Rails backend
@@ -205,7 +204,7 @@ function App() {
   }, []);
 
   return (
-    <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <OneTapLogin />
       <div className="flex flex-col h-screen w-full bg-gray-100">
         <header className="flex items-center justify-between px-6 py-4 bg-white shadow-sm border-b">
