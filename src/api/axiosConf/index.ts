@@ -38,5 +38,6 @@ export default new AxiosConf({
   headers: { 
     'content-type': 'application/json',
     'ngrok-skip-browser-warning': '69420',
+    'Access-Control-Allow-Origin': '*'
   }
 }).instance();

@@ -9,8 +9,11 @@ import type { Product, Message, Coupon } from './types/types';
 import { createSubscription, sendMessage, unsubscribe } from './service/actionCableService';
 import { motion, useAnimation } from 'framer-motion';
 import { loginUser } from './api/repositories/auth';
+import { useAuth } from './context/AuthContext';
 
 const OneTapLogin = () => {
+  const { login } = useAuth();
+
   useGoogleOneTapLogin({
     onSuccess: (credentialResponse: CredentialResponse) => {
       const token = credentialResponse.credential;
@@ -18,6 +21,7 @@ const OneTapLogin = () => {
       loginUser(token || "")
         .then(user => {
           console.log('Logged in user:', user);
+          login(token || "");
         })
         .catch(error => {
           console.error('Login error:', error);
@@ -32,6 +36,7 @@ const OneTapLogin = () => {
 };
 
 function App() {
+  const { isAuthenticated, logout } = useAuth();
   const assistantSlug = "laura-5";
   const controls = useAnimation();
   //const [conversationId, setConversationId] = useState<string | null>(null);
@@ -217,7 +222,16 @@ function App() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-gray-600 border-r pr-4">
               <User size={20} />
-              <span className="font-medium">Daniel Arenas</span>
+              {isAuthenticated ? (
+                <>
+                  <span className="font-medium">Daniel Arenas</span>
+                  <a href="/orders" className="ml-2 hover:text-blue-500">My Orders</a>
+                  <a href="/profile" className="ml-2 hover:text-blue-500">Profile</a>
+                  <button onClick={logout} className="ml-2 hover:text-blue-500">Logout</button>
+                </>
+              ) : (
+                <span className="font-medium">Guest</span>
+              )}
             </div>
             <motion.button
               animate={controls}
