@@ -8,21 +8,20 @@ import TypingIndicator from './components/TypingIndicator';
 import type { Product, Message, Coupon } from './types/types';
 import { createSubscription, sendMessage, unsubscribe } from './service/actionCableService';
 import { motion, useAnimation } from 'framer-motion';
+import { loginUser } from './api/repositories/auth';
 
 const OneTapLogin = () => {
   useGoogleOneTapLogin({
     onSuccess: (credentialResponse: CredentialResponse) => {
       const token = credentialResponse.credential;
-      
-      // Send this token to your Rails backend
-      fetch('http://localhost:3000/api/v1/auth/google', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token })
-      })
-      .then(res => res.json())
-      .then(data => console.log("Backend Response:", data))
-      .catch(err => console.error("Login failed:", err));
+
+      loginUser(token || "")
+        .then(user => {
+          console.log('Logged in user:', user);
+        })
+        .catch(error => {
+          console.error('Login error:', error);
+        });
     },
     onError: () => {
       console.log('One Tap Login Failed');
