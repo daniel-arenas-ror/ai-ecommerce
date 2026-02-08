@@ -1,6 +1,5 @@
 import type { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
-import axiosConf from './../axiosConf/index';
-
+import axiosConf from './../axiosConf';
 export class Connector {
   private httpClient: AxiosInstance;
 
