@@ -1,6 +1,6 @@
 import connector from "../../connector";
-import type { Task } from "../../../types/user";
+import type { User } from "../../../types/user";
 
-export const loginUser = (): Promise<Task[]> => {
-  return connector.get('/api/v1/google_login') as Promise<Task[]>;
+export const loginUser = (): Promise<User> => {
+  return connector.get('/api/v1/google_login') as Promise<User>;
 };
