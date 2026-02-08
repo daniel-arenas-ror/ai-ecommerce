@@ -2,7 +2,8 @@ import axios from "axios";
 import type {
   AxiosResponse,
   AxiosInstance, 
-  AxiosRequestConfig
+  AxiosRequestConfig,
+  InternalAxiosRequestConfig
 } from "axios";
 
 const DEFAULT_TIMEOUT = 5000;
@@ -12,6 +13,14 @@ export class AxiosConf {
 
   constructor(configuration: AxiosRequestConfig = {}) {
     this.http = axios.create(configuration);
+
+    this.http.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    });
   }
 
   public instance(): AxiosInstance {
