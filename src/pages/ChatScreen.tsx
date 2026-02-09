@@ -36,7 +36,6 @@ const OneTapLogin = () => {
 };
 
 const ChatScreen: React.FC = () => {
-  const { isAuthenticated, logout } = useAuth();
   const assistantSlug = "laura-5";
   //const [conversationId, setConversationId] = useState<string | null>(null);
   const [conversationId, setConversationId] = useState<string | null>("203");
