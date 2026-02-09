@@ -8,6 +8,7 @@ import { createSubscription, sendMessage, unsubscribe } from './../service/actio
 import Header from '../components/Header';
 import { loginUser } from '../api/repositories/auth';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import { GoogleOAuthProvider, useGoogleOneTapLogin } from '@react-oauth/google';
 import type { CredentialResponse } from '@react-oauth/google';
 
@@ -39,10 +40,7 @@ const ChatScreen: React.FC = () => {
   const assistantSlug = "laura-5";
   //const [conversationId, setConversationId] = useState<string | null>(null);
   const [conversationId, setConversationId] = useState<string | null>("203");
-  const [cart, setCart] = useState<Product[]>(() => {
-    const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+  const { items, addItem, removeItem } = useCart();
   //const [coupon, setCoupon] = useState<Coupon[]>([{ code: "DISCOUNT", discount: 10 }]);
   const [coupon, setCoupon] = useState<Coupon[]>([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -60,9 +58,7 @@ const ChatScreen: React.FC = () => {
     scrollToBottom();
   }, [messages]);
 
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+  // Cart persistence is handled by CartContext
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,11 +69,11 @@ const ChatScreen: React.FC = () => {
   };
 
   const addToCart = (product: Product) => {
-    setCart((prev) => [...prev, product]);
+    addItem(product);
   };
 
   const removeFromCart = (productId: number) => {
-    setCart((prev) => prev.filter(p => p.id !== productId));
+    removeItem(productId);
   };
 
   const startPurchase = () => {
@@ -199,7 +195,7 @@ const ChatScreen: React.FC = () => {
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <OneTapLogin />
       <div className="flex flex-col h-screen w-full bg-gray-100">
-        <Header cartLength={cart.length} onCartButtonClick={() => setIsCartOpen(true)} />
+        <Header cartLength={items.length} onCartButtonClick={() => setIsCartOpen(true)} />
 
         <main className="flex-1 overflow-y-auto p-4 md:px-20 lg:px-40 space-y-4">
           {
@@ -265,7 +261,7 @@ const ChatScreen: React.FC = () => {
           coupon={coupon}
           isOpen={isCartOpen}
           onClose={() => setIsCartOpen(false)}
-          items={cart}
+          items={items}
           onRemove={removeFromCart}
           startPurchase={startPurchase}
         />
