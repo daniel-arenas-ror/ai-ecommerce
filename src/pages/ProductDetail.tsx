@@ -8,8 +8,9 @@ const ProductDetail: React.FC = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeImage, setActiveImage] = useState<string>("");
 
-useEffect(() => {
+  useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
@@ -26,47 +27,83 @@ useEffect(() => {
     if (id) fetchProduct();
   }, [id]);
 
-  if (loading) return <div>Loading product details...</div>;
-  if (error) return <div style={{ color: 'red' }}>{error}</div>;
-  if (!product) return <div>Product not found.</div>;
+  if (loading) return (
+    <div className="flex justify-center items-center h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+  );
 
-  return (
-    <div className="product-container" style={{ display: 'flex', gap: '2rem', padding: '20px' }}>
-      {/* Image Gallery */}
-      <div className="product-images" style={{ flex: 1 }}>
-        {product.url_images.map((img, index) => (
-          <img 
-            key={index} 
-            src={img} 
-            alt={`${product.name} - ${index}`} 
-            style={{ width: '100%', marginBottom: '10px', borderRadius: '8px' }} 
-          />
-        ))}
-      </div>
+  if (error || !product) return (
+    <div className="text-center mt-20 text-red-500 font-semibold">{error || "Product not found"}</div>
+  );
 
-      {/* Product Info */}
-      <div className="product-info" style={{ flex: 1 }}>
-        <h1>{product.name}</h1>
-        <p className="price" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-          ${product.price.toLocaleString()}
-        </p>
-        <p className="description">{product.description}</p>
+return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 lg:items-start">
         
-        <h3>Amenities</h3>
-        <ul>
-          {product.amenities.map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
+        {/* Left Side: Image Gallery */}
+        <div className="flex flex-col-reverse">
+          <div className="mt-6 w-full max-w-2xl mx-auto sm:block lg:max-w-none">
+            <div className="grid grid-cols-4 gap-4">
+              {product.url_images.map((img, index) => (
+                <button
+                  key={index}
+                  onClick={() => setActiveImage(img)}
+                  className={`relative h-24 bg-white rounded-md flex items-center justify-center cursor-pointer hover:opacity-75 overflow-hidden ring-offset-2 ${activeImage === img ? 'ring-2 ring-blue-500' : 'ring-0'}`}
+                >
+                  <img src={img} alt="" className="w-full h-full object-center object-cover" />
+                </button>
+              ))}
+            </div>
+          </div>
 
-        <a href={product.url} target="_blank" rel="noreferrer">
-          View Original Source
-        </a>
+          <div className="w-full aspect-w-1 aspect-h-1 overflow-hidden rounded-lg bg-gray-100">
+            {activeImage && <img
+              src={activeImage}
+              alt={product.name}
+              className="w-full h-full object-center object-cover shadow-sm transition-all duration-300"
+            />}
+          </div>
+        </div>
 
-        <div style={{ marginTop: '20px' }}>
-          <button style={{ padding: '10px 20px', cursor: 'pointer' }}>
-            Add to Shopping Cart
-          </button>
+        {/* Right Side: Product Info */}
+        <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
+          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">{product.name}</h1>
+          
+          <div className="mt-3">
+            <h2 className="sr-only">Product information</h2>
+            <p className="text-3xl text-gray-900 font-bold">${product.price.toLocaleString()}</p>
+          </div>
+
+          <div className="mt-6">
+            <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">Description</h3>
+            <div className="mt-2 text-base text-gray-700 leading-relaxed">
+              {product.description}
+            </div>
+          </div>
+
+          <div className="mt-8 border-t border-gray-200 pt-8">
+            <h3 className="text-sm font-medium text-gray-900 uppercase tracking-wider">Amenities</h3>
+            <ul className="mt-4 grid grid-cols-2 gap-y-2">
+              {product.amenities}
+            </ul>
+          </div>
+
+          <div className="mt-10 flex flex-col space-y-4">
+            <button
+              className="w-full bg-blue-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            >
+              Add to Shopping Cart
+            </button>
+            <a
+              href={product.url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-center text-sm text-blue-600 hover:text-blue-500 font-medium"
+            >
+              View original website →
+            </a>
+          </div>
         </div>
       </div>
     </div>
