@@ -2,17 +2,20 @@ import React from 'react';
 import { ShoppingCart, User } from 'lucide-react';
 import { motion, useAnimation } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   cartLength: number;
   onCartButtonClick: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ cartLength, onCartButtonClick }) => {
+const Header: React.FC<HeaderProps> = () => {
   const { isAuthenticated, logout } = useAuth();
+  const { items } = useCart();
+  const cartLength = items.length;
   const controls = useAnimation();
 
-  // This effect ensures the animation is triggered when cartLength changes
   React.useEffect(() => {
     controls.start({
       scale: [1, 1.1, 1],
@@ -34,12 +37,12 @@ const Header: React.FC<HeaderProps> = ({ cartLength, onCartButtonClick }) => {
               <button onClick={logout} className="ml-2 hover:text-blue-500">Logout</button>
             </>
           ) : (
-            <span className="font-medium">Guest</span>
+            <Link to="/login" className="bg-blue-600 text-white px-4 py-2 rounded">Login</Link>
           )}
         </div>
         <motion.button
           animate={controls}
-          onClick={onCartButtonClick}
+          onClick={() => {}}
           className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
         >
           <ShoppingCart size={24} />
