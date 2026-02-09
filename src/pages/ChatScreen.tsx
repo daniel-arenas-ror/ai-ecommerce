@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ShoppingCart, User, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 import ProductCard from './../components/ProductCard';
 import CartDrawer from './../components/CartDrawer';
 import TypingIndicator from './../components/TypingIndicator';
 import type { Product, Message, Coupon } from './../types/types';
 import { createSubscription, sendMessage, unsubscribe } from './../service/actionCableService';
-import { motion, useAnimation } from 'framer-motion';
+import Header from '../components/Header';
 import { loginUser } from '../api/repositories/auth';
 import { useAuth } from '../context/AuthContext';
 import { GoogleOAuthProvider, useGoogleOneTapLogin } from '@react-oauth/google';
@@ -38,7 +38,6 @@ const OneTapLogin = () => {
 const ChatScreen: React.FC = () => {
   const { isAuthenticated, logout } = useAuth();
   const assistantSlug = "laura-5";
-  const controls = useAnimation();
   //const [conversationId, setConversationId] = useState<string | null>(null);
   const [conversationId, setConversationId] = useState<string | null>("203");
   const [cart, setCart] = useState<Product[]>(() => {
@@ -76,20 +75,10 @@ const ChatScreen: React.FC = () => {
 
   const addToCart = (product: Product) => {
     setCart((prev) => [...prev, product]);
-
-    controls.start({
-      scale: [1, 1.3, 1],
-      transition: { duration: 0.4 }
-    });
   };
 
   const removeFromCart = (productId: number) => {
     setCart((prev) => prev.filter(p => p.id !== productId));
-
-    controls.start({
-      scale: [1, 1.3, 1],
-      transition: { duration: 0.4 }
-    });
   };
 
   const startPurchase = () => {
@@ -211,40 +200,7 @@ const ChatScreen: React.FC = () => {
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <OneTapLogin />
       <div className="flex flex-col h-screen w-full bg-gray-100">
-        <header className="flex items-center justify-between px-6 py-4 bg-white shadow-sm border-b">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-              G
-            </div>
-            <h1 className="text-xl font-bold text-gray-800">Gemini Store</h1>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-gray-600 border-r pr-4">
-              <User size={20} />
-              {isAuthenticated ? (
-                <>
-                  <span className="font-medium">Daniel Arenas</span>
-                  <a href="/orders" className="ml-2 hover:text-blue-500">My Orders</a>
-                  <a href="/profile" className="ml-2 hover:text-blue-500">Profile</a>
-                  <button onClick={logout} className="ml-2 hover:text-blue-500">Logout</button>
-                </>
-              ) : (
-                <span className="font-medium">Guest</span>
-              )}
-            </div>
-            <motion.button
-              animate={controls}
-              onClick={() => setIsCartOpen(true)}
-              className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
-            >
-              <ShoppingCart size={24} />
-              <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                {cart.length}
-              </span>
-            </motion.button>
-          </div>
-        </header>
+        <Header cartLength={cart.length} onCartButtonClick={() => setIsCartOpen(true)} />
 
         <main className="flex-1 overflow-y-auto p-4 md:px-20 lg:px-40 space-y-4">
           {
