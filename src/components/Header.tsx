@@ -3,6 +3,7 @@ import { ShoppingCart, User } from 'lucide-react';
 import { motion, useAnimation } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useCompany } from '../context/CompanyContext';
 import { Link } from 'react-router-dom';
 
 interface HeaderProps {
@@ -13,6 +14,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = () => {
   const { isAuthenticated, logout } = useAuth();
   const { items } = useCart();
+  const { company } = useCompany();
   const cartLength = items.length;
   const controls = useAnimation();
 
@@ -25,7 +27,7 @@ const Header: React.FC<HeaderProps> = () => {
 
   return (
     <header className="bg-white shadow-sm p-4 flex justify-between items-center z-10">
-      <h1 className="text-2xl font-bold text-gray-800">AI Commerce</h1>
+      <h1 className="text-2xl font-bold text-gray-800">{company?.name || 'AI Commerce'}</h1>
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 text-gray-600 border-r pr-4">
           <User size={20} />
