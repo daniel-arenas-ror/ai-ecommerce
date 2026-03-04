@@ -8,6 +8,7 @@ import { ApolloProvider } from "@apollo/client/react";
 
 import { AuthProvider } from './context/AuthContext.tsx'
 import { CartProvider } from './context/CartContext.tsx'
+import { CompanyProvider } from './context/CompanyContext.tsx'
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -20,11 +21,13 @@ const client = new ApolloClient({
 createRoot(document.getElementById('root')!).render(
   <ApolloProvider client={client}>
     <StrictMode>
-      <AuthProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
-      </AuthProvider>
+      <CompanyProvider>
+        <AuthProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </AuthProvider>
+      </CompanyProvider>
     </StrictMode>
   </ApolloProvider>
 )
