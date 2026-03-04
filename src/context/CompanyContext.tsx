@@ -25,7 +25,7 @@ export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // read company id from environment variable – fallback to null if missing
   const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
 
-  const { data } = useQuery(GET_COMPANY_MAIN_DATA, {
+  const { data, loading } = useQuery(GET_COMPANY_MAIN_DATA, {
     variables: { companyId: companyId },
     skip: !!company || !companyId,
   });
@@ -47,6 +47,18 @@ export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ child
     company,
     setCompany
   };
+
+  // show spinner while loading and company is not yet available
+  if (loading && !company) {
+    return (
+      <div className="flex items-center justify-center w-screen h-screen bg-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+          <p className="text-gray-600 text-sm">Loading company information...</p>
+        </div>
+      </div>
+    );
+  }
 
   return <CompanyContext.Provider value={value}>{children}</CompanyContext.Provider>;
 }
