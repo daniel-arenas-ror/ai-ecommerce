@@ -19,13 +19,9 @@ export interface Coupon {
   discount: number;
 }
 
-export interface Subcategory {
-  id: string | number;
-  name: string;
-}
-
 export interface Category {
   id: string | number;
   name: string;
-  subCategories?: Subcategory[];
+  slug: string;
+  subCategories?: Category[];
 }

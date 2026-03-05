@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useQuery } from "@apollo/client/react";
+import { GET_CATEGORIES_DATA } from '../api/queries/category';
 import type { Category } from '../types/types';
 
-interface CategoriesProps {
-  categories: Category[];
-}
+const Categories: React.FC = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
 
-const Categories: React.FC<CategoriesProps> = ({ categories }) => {
+  const { loading, error, data } = useQuery(GET_CATEGORIES_DATA, {
+    variables: { companyId: companyId }
+  });
+
+  useEffect(() => {
+    if (data?.companyCategories) {
+      console.log('Fetched categories data:', data.companyCategories);
+      setCategories(data.companyCategories);
+    }
+  }, [data?.companyCategories?.length]);
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <nav className="flex items-center justify-center space-x-8 border-b border-gray-100 bg-white px-6 py-4">
       {categories.map((category) => (
@@ -20,7 +34,7 @@ const Categories: React.FC<CategoriesProps> = ({ categories }) => {
               {category?.subCategories && category?.subCategories?.length > 0 && category?.subCategories.map((sub) => (
                 <li key={sub.id}>
                   <a
-                    href={`/categories/${sub.id}`}
+                    href={`/category/${sub.slug}`}
                     className="block px-4 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-black"
                   >
                     {sub.name}
