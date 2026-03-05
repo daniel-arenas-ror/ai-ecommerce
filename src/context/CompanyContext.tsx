@@ -14,8 +14,9 @@ export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // initialize state from localStorage (synchronous) to avoid unnecessary fetch
   const [company, setCompany] = useState<Company | null>(() => {
     try {
-      const stored = localStorage.getItem('company');
-      return stored ? (JSON.parse(stored) as Company) : null;
+      //const stored = localStorage.getItem('company');
+      //return stored ? (JSON.parse(stored) as Company) : null;
+        return null; // --- IGNORE localStorage for now to simplify development ---
     } catch {
       return null;
     }

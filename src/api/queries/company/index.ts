@@ -5,6 +5,7 @@ export const GET_COMPANY_MAIN_DATA = gql`
     company(companyId: $companyId) {
       id
       name
+      iconUrl
     }
   }
 `;

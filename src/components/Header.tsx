@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = () => {
 
   return (
     <header className="bg-white shadow-sm p-4 flex justify-between items-center z-10">
-      <h1 className="text-2xl font-bold text-gray-800">{company?.name || 'AI Commerce'}</h1>
+      <img src={import.meta.env.VITE_BACKEND_URL + (company?.iconUrl || '/default-icon.png')} alt={company?.name} className="h-8 mr-2" />
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 text-gray-600 border-r pr-4">
           <User size={20} />
