@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = () => {
   return (
     <header className="bg-white shadow-sm p-4 flex justify-between items-center z-10">
       <a href="/">
-        <img src={import.meta.env.VITE_BACKEND_URL + (company?.iconUrl || '/default-icon.png')} alt={company?.name} className="h-8 mr-2" />
+        <img src={company?.iconUrl} alt={company?.name} className="h-8 mr-2" />
       </a>
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 text-gray-600 border-r pr-4">
