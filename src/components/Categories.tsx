@@ -12,11 +12,11 @@ const Categories: React.FC = () => {
   });
 
   useEffect(() => {
-    if (data?.companyCategories) {
-      console.log('Fetched categories data:', data.companyCategories);
-      setCategories(data.companyCategories);
+    if (data?.categories) {
+      console.log('Fetched categories data:', data.categories);
+      setCategories(data.categories);
     }
-  }, [data?.companyCategories?.length]);
+  }, [data?.categories?.length]);
 
   if (loading) return <div>Loading...</div>;
 
