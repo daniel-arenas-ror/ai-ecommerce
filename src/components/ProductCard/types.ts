@@ -1,4 +1,4 @@
-import type { Product } from '../../types/types';
+import type { Product } from '../../types/product';
 
 export type CardStyle = 'minimal' | 'premium' | 'compact' | 'detailed';
 

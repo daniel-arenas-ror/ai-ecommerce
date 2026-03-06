@@ -17,7 +17,7 @@ const MinimalCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       {/* Image */}
       <div className="h-40 bg-gray-100 overflow-hidden">
         <img 
-          src={product.image} 
+          src={product.images[0]?.thumbUrl} 
           alt={product.name} 
           className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
         />

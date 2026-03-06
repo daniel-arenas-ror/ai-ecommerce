@@ -7,7 +7,7 @@ const Categories: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
 
-  const { loading, error, data } = useQuery(GET_CATEGORIES_DATA, {
+  const { loading, data } = useQuery<{ categories: Category[] }>(GET_CATEGORIES_DATA, {
     variables: { companyId: companyId }
   });
 
