@@ -26,7 +26,7 @@ export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // read company id from environment variable – fallback to null if missing
   const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
 
-  const { data, loading } = useQuery(GET_COMPANY_MAIN_DATA, {
+  const { data, loading } = useQuery<{ company: Company }>(GET_COMPANY_MAIN_DATA, {
     variables: { companyId: companyId },
     skip: !!company || !companyId,
   });
@@ -34,7 +34,6 @@ export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ child
   // update company when query returns data
   useEffect(() => {
     if (data?.company) {
-      console.log('Fetched company data:', data.company);
       setCompany(data.company);
       try {
         localStorage.setItem('company', JSON.stringify(data.company));
