@@ -7,6 +7,7 @@ export const GET_PRODUCT_BY_CATEGORY = gql`
       name
       slug
       price
+      active
       images {
         id
         url

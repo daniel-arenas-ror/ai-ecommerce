@@ -46,7 +46,6 @@ const Categories: React.FC = () => {
             {category.name}
             <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-black transition-all duration-300 group-hover:w-full" />
           </a>
-
           {/* Dropdown Menu */}
           <div className="invisible absolute left-0 top-full z-50 w-48 translate-y-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
             <ul className="mt-2 border border-gray-100 bg-white py-2 shadow-xl">
