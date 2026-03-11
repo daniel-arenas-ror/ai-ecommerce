@@ -38,7 +38,7 @@ const ProductDetail: React.FC = () => {
   );
 
 return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 lg:items-start">
         
         {/* Left Side: Image Gallery */}

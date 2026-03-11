@@ -22,7 +22,7 @@ const Category: React.FC = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 max-w-7xl mx-auto"> 
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 mx-auto"> 
           <aside
             className={`md:col-span-1 ${
               isMobileFilterOpen ? 'block' : 'hidden'
