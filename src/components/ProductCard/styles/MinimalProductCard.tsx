@@ -29,7 +29,7 @@ const FADE_TRANSITION = {
 const MinimalProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   // Track the image currently being displayed (defaults to primary)
-  const [currentImage, setCurrentImage] = useState(product.allImages[0]?.thumbUrl);
+  const [currentImage, setCurrentImage] = useState(product.allImages[0]?.mediumUrl);
 
   // Helper to get formatted price
   const formatPrice = (price: string | number) => {
@@ -43,12 +43,12 @@ const MinimalProductCard: React.FC<ProductCardProps> = ({ product }) => {
       onMouseEnter={() => {
         setIsHovered(true);
         // On hover, stack the secondary image
-        setCurrentImage(product.allImages[1]?.thumbUrl);
+        setCurrentImage(product.allImages[1]?.mediumUrl);
       }}
       onMouseLeave={() => {
         setIsHovered(false);
         // On leave, remove the secondary stack
-        setCurrentImage(product.allImages[0]?.thumbUrl);
+        setCurrentImage(product.allImages[0]?.mediumUrl);
       }}
     >
       {/* --- Image Container (Aspect Ratio 1:1) --- */}
@@ -59,14 +59,14 @@ const MinimalProductCard: React.FC<ProductCardProps> = ({ product }) => {
         
         {/* Primary Image (Always rendering) */}
         <img
-          src={product.allImages[0]?.thumbUrl}
+          src={product.allImages[0]?.mediumUrl}
           alt={product.slug}
           className="absolute inset-0 h-full w-full object-cover z-0"
         />
 
         {/* Secondary Image (Fades in over primary on hover) */}
         <motion.img
-          src={product.allImages[1]?.thumbUrl}
+          src={product.allImages[1]?.mediumUrl}
           alt={`${product.name} (Alternative View)`}
           className="absolute inset-0 h-full w-full object-cover z-10"
           initial={{ opacity: 0 }}
