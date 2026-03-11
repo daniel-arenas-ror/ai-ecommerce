@@ -1,6 +1,6 @@
 import type { Product } from '../../types/product';
 
-export type CardStyle = 'minimal' | 'premium' | 'compact' | 'detailed' | 'profile'; 
+export type CardStyle = 'minimal' | 'premium' | 'compact' | 'detailed' | 'profile' | 'minimal2' ; 
 
 export interface ProductCardProps {
   product: Product;

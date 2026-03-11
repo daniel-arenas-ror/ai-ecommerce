@@ -3,6 +3,7 @@ import PremiumCard from './styles/PremiumCard';
 import CompactCard from './styles/CompactCard';
 import DetailedCard from './styles/DetailedCard';
 import ProfileCard from './styles/ProfileCard';
+import MinimalProductCard from './styles/MinimalProductCard';
 import type { CardStyle, CardComponent } from './types';
 
 /**
@@ -30,6 +31,10 @@ export const cardFactory = (style: CardStyle = 'minimal'): CardComponent => {
     profile: {
       component: ProfileCard,
       description: 'Profile-style card with image focus',
+    },
+    minimal2: {
+      component: MinimalProductCard,
+      description: 'Minimal product photos',
     }
   };
 

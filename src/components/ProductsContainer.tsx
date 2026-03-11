@@ -29,7 +29,7 @@ const ProductDetail: React.FC<{ category_slug: string }> = ({ category_slug }) =
             product={product}
             onAddToCart={() => console.log('Added to cart:', product.name)}
             onViewDetail={() => console.log('Viewing detail:', product.name)}
-            style="profile"
+            style="minimal2"
           />
         </div>
       ))}
