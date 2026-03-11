@@ -5,10 +5,11 @@ export const GET_PRODUCT_BY_CATEGORY = gql`
     categoryProducts(companyId: $companyId, categorySlug: $categorySlug) {
       id
       name
+      description
       slug
       price
       active
-      images {
+      allImages {
         id
         url
         thumbUrl
