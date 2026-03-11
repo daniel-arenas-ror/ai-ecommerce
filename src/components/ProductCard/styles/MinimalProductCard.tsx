@@ -92,20 +92,20 @@ const MinimalProductCard: React.FC<ProductCardProps> = ({ product }) => {
         animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
         transition={{ ...FADE_TRANSITION, delay: 0.1 }} // Slight delay after image fade
       >
-        {false && product.swatches.map((swatch) => (
+        {[{id: 1, swatchType: 'size', label: "39"},{id: 2, swatchType: 'size', label: "40"} ].map((swatch) => (
           <button
             key={swatch.id}
             className={`
               transition-all duration-300 ease-out
-              ${product.swatchType === 'size' 
+              ${swatch.swatchType === 'size' 
                 ? 'min-w-[60px] text-center px-4 py-2 border border-gray-200 rounded text-sm font-medium text-gray-700 hover:border-black hover:text-black hover:shadow-sm'
                 : 'w-10 h-10 rounded-full border border-gray-100 shadow-inner'
               }
             `}
-            style={product.swatchType === 'color' ? { backgroundColor: swatch.value } : {}}
-            title={product.swatchType === 'color' ? swatch.label : undefined}
+            style={swatch.swatchType === 'color' ? { backgroundColor: swatch.value } : {}}
+            title={swatch.swatchType === 'color' ? swatch.label : undefined}
           >
-            {product.swatchType === 'size' && swatch.label}
+            {swatch.swatchType === 'size' && swatch.label}
           </button>
         ))}
       </motion.div>
