@@ -17,7 +17,7 @@ const CompactCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
       {/* Image - Side */}
       <div className="w-24 h-24 flex-shrink-0 bg-gray-100 overflow-hidden">
         <img 
-          src={product.images[0]?.thumbUrl} 
+          src={product.allImages[0]?.thumbUrl} 
           alt={product.name} 
           className="w-full h-full object-cover"
         />
