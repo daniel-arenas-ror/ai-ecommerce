@@ -51,17 +51,6 @@ const PremiumCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
           <p className="text-3xl font-bold text-blue-600">${product.price}</p>
         </div>
 
-        {/* Amenities */}
-        {product.amenities && product.amenities.length > 0 && (
-          <div className="mb-4 flex flex-wrap gap-2">
-            {product.amenities.slice(0, 3).map((amenity, idx) => (
-              <span key={idx} className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
-                {amenity}
-              </span>
-            ))}
-          </div>
-        )}
-
         {/* Actions */}
         <div className="flex gap-3 pt-4 border-t border-gray-200">
           <motion.button

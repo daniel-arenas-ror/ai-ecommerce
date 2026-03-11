@@ -41,23 +41,6 @@ const DetailedCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onView
           {product.description}
         </p>
 
-        {/* Amenities */}
-        {product.amenities && product.amenities.length > 0 && (
-          <div className="mb-4">
-            <p className="text-xs font-semibold text-gray-500 mb-2 uppercase">Features:</p>
-            <div className="flex flex-wrap gap-2">
-              {product.amenities.slice(0, 4).map((amenity, idx) => (
-                <span 
-                  key={idx} 
-                  className="text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded border border-blue-200"
-                >
-                  {amenity}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Price and Actions */}
         <div className="border-t border-gray-200 pt-4">
           <div className="flex items-center justify-between mb-4">
