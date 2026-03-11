@@ -3,10 +3,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  url: string;
-  url_images: string[];
-  amenities: string[];
-  images: productImages[];
+  allImages: productImages[];
 }
 
 export interface productImages {
