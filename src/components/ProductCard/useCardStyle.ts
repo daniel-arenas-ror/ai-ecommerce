@@ -8,8 +8,8 @@ import type { CardStyle } from './types';
  * Simplifies access to card configuration throughout the app
  */
 export const useCardStyle = (): CardStyle => {
-  const { company } = useContext(CompanyContext) || { company: null };
-  
+  const { company } = useContext(CompanyContext);
+
   // Assuming company object might have a config property in the future
   // For now, you can extend Company type to include cardStyle
   const config = (company as any)?.config;

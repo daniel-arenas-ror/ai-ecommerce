@@ -1,6 +1,7 @@
 import React from 'react';
 import { cardFactory, getCardStyleFromConfig } from './cardFactory';
 import type { ProductCardProps, CardStyle } from './types';
+import { useCompany } from '../../context/CompanyContext';
 
 interface ProductCardContainerProps extends ProductCardProps {
   /**
@@ -30,8 +31,10 @@ const ProductCard: React.FC<ProductCardContainerProps> = ({
   style: explicitStyle,
   config,
 }) => {
+  const { company } = useCompany();
+
   // Determine which style to use
-  const cardStyle = explicitStyle || getCardStyleFromConfig(config);
+  const cardStyle = explicitStyle || company?.productCardConfiguration || getCardStyleFromConfig(config);
   
   // Get the card component from factory
   const { component: CardComponent } = cardFactory(cardStyle);

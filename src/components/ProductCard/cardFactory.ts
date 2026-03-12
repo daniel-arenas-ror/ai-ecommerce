@@ -50,7 +50,7 @@ export const getCardStyleFromConfig = (
 ): CardStyle => {
   if (!companyConfig) return 'minimal';
 
-  const cardStyle = companyConfig.cardStyle as string | undefined;
+  const cardStyle = companyConfig.config as string | undefined;
   
   if (cardStyle && ['minimal', 'premium', 'compact', 'detailed'].includes(cardStyle)) {
     return cardStyle as CardStyle;
