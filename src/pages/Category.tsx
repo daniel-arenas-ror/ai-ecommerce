@@ -27,17 +27,6 @@ const Category: React.FC = () => {
           <FilterProducts />
 
           <div className="md:col-span-3">
-            <div className="flex items-center justify-between mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">Products</h1>
-
-              <select className="px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-800 cursor-pointer hover:border-gray-400">
-                <option>Newest</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Rating</option>
-              </select>
-            </div>
-
             <ProductDetail category_slug={id || ''} />
           </div>
         </div>

@@ -30,7 +30,7 @@ const FilterProducts: React.FC = () => {
       <h2 className="text-lg font-bold mb-6 text-gray-900">Filters</h2>
 
       <div className="mb-6">
-        <h3 className="font-semibold text-gray-800 mb-3">Price Range</h3>
+        <h3 className="font-semibold text-gray-800 mb-3">Rango</h3>
         <input
           type="range"
           min="0"

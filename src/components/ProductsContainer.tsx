@@ -22,14 +22,12 @@ const ProductDetail: React.FC<{ category_slug: string }> = ({ category_slug }) =
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 px-4 py-8">
       {products.map((product) => (
-        
-          <ProductCard
-            key={product.id}
-            product={product}
-            onAddToCart={() => console.log('Added to cart:', product.name)}
-            onViewDetail={() => console.log('Viewing detail:', product.name)}
-          />
-        
+        <ProductCard
+          key={product.id}
+          product={product}
+          onAddToCart={() => console.log('Added to cart:', product.name)}
+          onViewDetail={() => console.log('Viewing detail:', product.name)}
+        />
       ))}
     </div>
   )
