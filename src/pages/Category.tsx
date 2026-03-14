@@ -29,7 +29,7 @@ const Category: React.FC = () => {
   }, [data?.category]);
 
   return (
-<>
+    <>
       <Categories />
       <div className="min-h-screen bg-gray-50">
         
