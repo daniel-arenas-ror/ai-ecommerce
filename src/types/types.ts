@@ -10,10 +10,3 @@ export interface Coupon {
   code: string;
   discount: number;
 }
-
-export interface Category {
-  id: string | number;
-  name: string;
-  slug: string;
-  subCategories?: Category[];
-}

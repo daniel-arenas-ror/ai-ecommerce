@@ -6,6 +6,10 @@ export const GET_CATEGORIES_DATA = gql`
       id
       name
       slug
+      images {
+        id 
+        url
+      }
       subCategories {
         id
         name

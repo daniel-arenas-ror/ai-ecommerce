@@ -13,6 +13,7 @@ const Category: React.FC = () => {
     <>
       <Categories />
       <div className="min-h-screen bg-gray-50">
+        
         <div className="sticky top-0 z-30 bg-white border-b border-gray-200 p-4 md:hidden">
           <button
             onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
