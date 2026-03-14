@@ -3,12 +3,24 @@ import { useQuery } from "@apollo/client/react";
 import type { Product } from '../types/product';
 import { GET_PRODUCT_BY_CATEGORY } from '../api/queries/product';
 import ProductCard from './ProductCard';
+import { useSearchParams } from "react-router-dom";
 
 const ProductDetail: React.FC<{ category_slug: string }> = ({ category_slug }) => {
+  const [searchParams] = useSearchParams();
+  const selectedOptionValues = searchParams.get("option_values")?.split(",") || [];
   const [products, setProducts] = useState<Product[]>([]);
+
+  const ransackFilter = {
+    variants_option_values_id_in: selectedOptionValues.length > 0 ? selectedOptionValues : undefined
+  };
+
   const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
   const { loading, data } = useQuery<{ categoryProducts: Product[] }>(GET_PRODUCT_BY_CATEGORY, {
-    variables: { companyId: companyId, categorySlug: category_slug }
+    variables: {
+      companyId: companyId,
+      categorySlug: category_slug,
+      filter: ransackFilter
+    }
   });
 
   useEffect(() => {
