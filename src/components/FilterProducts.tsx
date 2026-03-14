@@ -77,7 +77,7 @@ const FilterProducts: React.FC = () => {
         />
         <div className="flex justify-between mt-2 text-sm text-gray-600">
           <span>$0</span>
-          <span>$1000</span>
+          <span>$500000</span>
         </div>
       </div>
 
