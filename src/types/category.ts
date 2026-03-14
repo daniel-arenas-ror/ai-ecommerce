@@ -3,5 +3,10 @@ export interface Category {
   name: string;
   slug: string;
   subCategories?: Category[];
-  images: []
+  images: categoryImages[]
+}
+
+export interface categoryImages {
+  id: number;
+  url: string;
 }

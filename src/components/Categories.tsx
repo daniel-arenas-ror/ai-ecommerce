@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from "@apollo/client/react";
 import { GET_CATEGORIES_DATA } from '../api/queries/category';
-import type { Category } from '../types/types';
+import type { Category } from '../types/category';
 
 const Categories: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -14,7 +14,6 @@ const Categories: React.FC = () => {
 
   useEffect(() => {
     if (data?.categories) {
-      console.log('Fetched categories data:', data.categories);
       setCategories(data.categories);
     }
   }, [data?.categories?.length]);
