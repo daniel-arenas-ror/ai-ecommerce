@@ -7,19 +7,26 @@ import { useSearchParams } from "react-router-dom";
 
 const ProductDetail: React.FC<{ category_slug: string }> = ({ category_slug }) => {
   const [searchParams] = useSearchParams();
-  const selectedOptionValues = searchParams.get("option_values")?.split(",") || [];
   const [products, setProducts] = useState<Product[]>([]);
 
-  const ransackFilter = {
-    variants_option_values_id_in: selectedOptionValues.length > 0 ? selectedOptionValues : undefined
+const buildRansackFilter = () => {
+  const selectedOptions = searchParams.get("option_values")?.split(",") || [];
+  const maxPrice = searchParams.get("max_p");
+
+  return {
+    variants_option_values_id_in: selectedOptions.length > 0 ? selectedOptions : undefined,
+    price_lteq: maxPrice ? Number(maxPrice) : undefined,
+    // to deal with min range proce
+    // price_gteq: minPrice ? Number(minPrice) : undefined
   };
+};
 
   const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
   const { loading, data } = useQuery<{ categoryProducts: Product[] }>(GET_PRODUCT_BY_CATEGORY, {
     variables: {
       companyId: companyId,
       categorySlug: category_slug,
-      filter: ransackFilter
+      filter: buildRansackFilter()
     }
   });
 

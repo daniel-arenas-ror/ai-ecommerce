@@ -1,10 +1,10 @@
 export interface OptionType {
-  id: number;
+  id: string;
   name: string;
   optionValues: optionValues[]
 }
 
 export interface optionValues {
-  id: number;
+  id: string;
   name: string;
 }

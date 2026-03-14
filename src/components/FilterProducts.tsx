@@ -8,6 +8,14 @@ const FilterProducts: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [optionType, setOptionType] = useState<OptionType[]>([])
+  const [tempPrice, setTempPrice] = useState<number>(
+    Number(searchParams.get("max_p")) || 1000
+  );
+
+  const handlePriceChangeCommitted = (value: number) => {
+    searchParams.set("max_p", value.toString());
+    setSearchParams(searchParams);
+  };
 
   const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
 
@@ -23,7 +31,7 @@ const FilterProducts: React.FC = () => {
 
   if (loading) return <div>Loading...</div>;
 
-  const handleFilterChange = (optionValueId: number) => {
+  const handleFilterChange = (optionValueId: string) => {
     const currentFilters = searchParams.get("option_values")?.split(",") || [];
     let newFilters: string[];
 
@@ -46,7 +54,7 @@ const FilterProducts: React.FC = () => {
     setSearchParams({});
   };
 
-  const isChecked = (id: number) => {
+  const isChecked = (id: string) => {
     return searchParams.get("option_values")?.split(",").includes(id) || false;
   };
 
@@ -62,9 +70,10 @@ const FilterProducts: React.FC = () => {
         <h3 className="font-semibold text-gray-800 mb-3">Rango</h3>
         <input
           type="range"
-          min="0"
-          max="1000"
-          className="w-full cursor-pointer"
+          value={tempPrice}
+          onChange={(e) => setTempPrice(Number(e.target.value))}
+          onMouseUp={() => handlePriceChangeCommitted(tempPrice)}
+          className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black"
         />
         <div className="flex justify-between mt-2 text-sm text-gray-600">
           <span>$0</span>
