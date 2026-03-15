@@ -7,4 +7,5 @@ export interface OptionType {
 export interface optionValues {
   id: string;
   name: string;
+  label: string;
 }

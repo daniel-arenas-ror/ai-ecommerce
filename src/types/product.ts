@@ -19,5 +19,6 @@ export interface productImages {
 export interface optionValues {
   id: number;
   name: string;
+  label: string;
   optionTypeName: string;
 }

@@ -80,13 +80,13 @@ const MinimalProductCard: React.FC<ProductCardProps> = ({ product }) => {
             key={optionValue.id}
             className={`
               transition-all duration-300 ease-out
-              ${optionValue.optionTypeName === 'size' 
-                ? 'min-w-[60px] text-center px-4 py-2 border border-gray-200 rounded text-sm font-medium text-gray-700 hover:border-black hover:text-black hover:shadow-sm'
-                : 'w-10 h-10 rounded-full border border-gray-100 shadow-inner'
+              ${optionValue.optionTypeName.toLowerCase() === 'color' 
+                ? 'w-10 h-10 rounded-full border border-gray-100 shadow-inner'
+                : 'min-w-[60px] text-center px-4 py-2 border border-gray-200 rounded text-sm font-medium text-gray-700 hover:border-black hover:text-black hover:shadow-sm'
               }
             `}
             style={optionValue.optionTypeName.toLowerCase() === 'color' ? { backgroundColor: optionValue.label } : {}}
-            title={optionValue.optionTypeName.toLowerCase() === 'color' ? optionValue.name : undefined}
+            title={optionValue.optionTypeName.toLowerCase() === 'color' ? optionValue.name || optionValue.label : optionValue.name}
           >
             {optionValue.optionTypeName === 'size' && optionValue.name}
           </button>

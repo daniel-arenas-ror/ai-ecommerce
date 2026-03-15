@@ -8,6 +8,7 @@ export const GET_FILTERING_OPTION_TYPE = gql`
       optionValues {
         id
         name
+        label
       }
     }
   }
