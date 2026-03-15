@@ -35,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
           className="absolute inset-0 bg-black z-10"
         />
 
-        {true && (
+        {false && (
           <span className="absolute top-4 left-4 z-20 bg-black text-white text-[10px] font-bold px-3 py-1 uppercase tracking-widest">
             New
           </span>
@@ -55,12 +55,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
           >
             {product.name}
           </motion.h3>
-          
-          {/* Status dot like in your example */}
-          <motion.span 
-            layout
-            className="w-4 h-4 rounded-full bg-green-500 border-2 border-white shadow-sm"
-          />
         </motion.div>
 
         <motion.p 

@@ -1,23 +1,6 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import type { ProductCardProps } from '../types';
-
-// --- Types ---
-interface ProductSwatch {
-  id: string | number;
-  label: string; // e.g., "US 9 / 39" or "Crimson"
-  value: string; // e.g., "us9" or "#DC2626" (for color)
-}
-
-interface Product {
-  id: string | number;
-  name: string;
-  price: string | number;
-  primaryImageUrl: string;
-  secondaryImageUrl: string;
-  swatches: ProductSwatch[];
-  swatchType: 'size' | 'color'; // Defines how to render the badges
-}
 
 // --- Framer Motion Animation Settings ---
 const FADE_TRANSITION = {
@@ -92,20 +75,20 @@ const MinimalProductCard: React.FC<ProductCardProps> = ({ product }) => {
         animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
         transition={{ ...FADE_TRANSITION, delay: 0.1 }} // Slight delay after image fade
       >
-        {[{id: 1, swatchType: 'size', label: "39"},{id: 2, swatchType: 'size', label: "40"} ].map((swatch) => (
+        {product.optionValues.map((optionValue) => (
           <button
-            key={swatch.id}
+            key={optionValue.id}
             className={`
               transition-all duration-300 ease-out
-              ${swatch.swatchType === 'size' 
+              ${optionValue.optionTypeName === 'size' 
                 ? 'min-w-[60px] text-center px-4 py-2 border border-gray-200 rounded text-sm font-medium text-gray-700 hover:border-black hover:text-black hover:shadow-sm'
                 : 'w-10 h-10 rounded-full border border-gray-100 shadow-inner'
               }
             `}
-            style={swatch.swatchType === 'color' ? { backgroundColor: swatch.value } : {}}
-            title={swatch.swatchType === 'color' ? swatch.label : undefined}
+            style={optionValue.optionTypeName.toLowerCase() === 'color' ? { backgroundColor: optionValue.label } : {}}
+            title={optionValue.optionTypeName.toLowerCase() === 'color' ? optionValue.name : undefined}
           >
-            {swatch.swatchType === 'size' && swatch.label}
+            {optionValue.optionTypeName === 'size' && optionValue.name}
           </button>
         ))}
       </motion.div>

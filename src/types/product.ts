@@ -5,6 +5,7 @@ export interface Product {
   description: string;
   price: number;
   allImages: productImages[];
+  optionValues: optionValues[];
 }
 
 export interface productImages {
@@ -13,4 +14,10 @@ export interface productImages {
   thumbUrl: string;
   mediumUrl: string;
   largeUrl: string;
+}
+
+export interface optionValues {
+  id: number;
+  name: string;
+  optionTypeName: string;
 }

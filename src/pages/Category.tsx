@@ -28,6 +28,8 @@ const Category: React.FC = () => {
     }
   }, [data?.category]);
 
+  if (loading) return <div>Loading...</div>;
+
   return (
     <>
       <Categories />
