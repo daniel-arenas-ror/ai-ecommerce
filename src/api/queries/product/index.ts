@@ -25,3 +25,16 @@ export const GET_PRODUCT_BY_CATEGORY = gql`
     }
   }
 `;
+
+export const GET_PRODUCT_DETAIL = gql`
+  query getproduct($companyId: ID!, $productSlug: ID!) {
+    product(companyId: $companyId, productSlug: $productSlug) {
+      id
+      name
+      description
+      slug
+      price
+      active
+    }
+  }
+`;
