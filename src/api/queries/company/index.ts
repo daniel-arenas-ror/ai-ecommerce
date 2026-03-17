@@ -7,6 +7,7 @@ export const GET_COMPANY_MAIN_DATA = gql`
       name
       iconUrl
       productCardConfiguration
+      productDetailConfiguration
       companyItemConfigurations {
         id
         name
