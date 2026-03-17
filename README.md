@@ -70,6 +70,13 @@ export default defineConfig([
     },
   },
 ])
+
+
+## Add new styles to components
+
+
+
+
 ```
 
 Install packages
