@@ -3,9 +3,11 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from "@apollo/client/react";
 import type { Product } from '../types/product';
 import { GET_PRODUCT_DETAIL } from '../api/queries/product';
+import ProductDetailComponent from '../components/ProductDetailComponent'
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const [ product, setProduct ] = useState<Product>();
 
   const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
   const { loading, data } = useQuery<{ product: Product }>(GET_PRODUCT_DETAIL, {
@@ -14,6 +16,12 @@ const ProductDetail: React.FC = () => {
       productSlug: id
     }
   });
+
+  useEffect(() => {
+    if (data?.product) {
+      setProduct(data.product);
+    }
+  }, [data?.product]);
 
   if (loading) return <div>Loading...</div>;
 
@@ -54,13 +62,8 @@ const ProductDetail: React.FC = () => {
         {/* This column is taller and contains a lot of text, causing it to scroll 
             independently while the image is stuck on the left. */}
         <div className="space-y-10">
-          <div className="bg-white p-10 rounded-[32px] border border-gray-100 shadow-xl">
-            <h2 className="text-2xl font-bold mb-4">The Comfort Runner</h2>
-            <p className="text-gray-600 leading-relaxed">
-              Introducing our most advanced sneaker yet. Designed for ultimate responsiveness and long-lasting comfort, it features an all-new midsole material and a breathable engineered mesh upper. Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias sequi repellendus perferendis sed.
-            </p>
-          </div>
-          
+          <ProductDetailComponent product={product} />
+
           <div className="bg-white p-10 rounded-[32px] border border-gray-100 shadow-lg">
             <h3 className="font-semibold text-lg mb-2">Key Highlights</h3>
             <ul className="list-disc list-inside text-gray-600 space-y-2 text-sm">
