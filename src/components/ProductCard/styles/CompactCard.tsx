@@ -9,7 +9,8 @@ import type { ProductCardProps } from '../types';
  */
 const CompactCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewDetail }) => {
   return (
-    <motion.div 
+    <motion.div
+      onClick={() => onViewDetail }
       className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow flex"
       whileHover={{ x: 4 }}
       transition={{ duration: 0.2 }}

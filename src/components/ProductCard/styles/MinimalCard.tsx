@@ -7,12 +7,13 @@ import type { ProductCardProps } from '../types';
  * Minimal Card Style - Clean and simple design
  * Best for: Catalogs with many products
  */
-const MinimalCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+const MinimalCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewDetail }) => {
   return (
     <motion.div 
       className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
+      onClick={() => onViewDetail }
     >
       {/* Image */}
       <div className="h-40 bg-gray-100 overflow-hidden">

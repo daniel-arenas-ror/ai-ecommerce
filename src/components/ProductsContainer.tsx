@@ -3,9 +3,10 @@ import { useQuery } from "@apollo/client/react";
 import type { Product } from '../types/product';
 import { GET_PRODUCT_BY_CATEGORY } from '../api/queries/product';
 import ProductCard from './ProductCard';
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 const ProductDetail: React.FC<{ category_slug: string }> = ({ category_slug }) => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -45,7 +46,7 @@ const buildRansackFilter = () => {
           key={product.id}
           product={product}
           onAddToCart={() => console.log('Added to cart:', product.name)}
-          onViewDetail={() => console.log('Viewing detail:', product.name)}
+          onViewDetail={() =>  navigate(`/profile/${product.slug}`) }
         />
       ))}
     </div>

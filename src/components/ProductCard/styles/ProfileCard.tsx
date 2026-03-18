@@ -9,6 +9,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
     <motion.div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onViewDetail }
       className="relative h-[480px] cursor-pointer overflow-hidden rounded-[40px] bg-white shadow-xl border-white"
     >
       {/* CONTAINER FOR IMAGE 

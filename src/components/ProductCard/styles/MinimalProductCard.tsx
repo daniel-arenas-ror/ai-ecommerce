@@ -9,7 +9,7 @@ const FADE_TRANSITION = {
 };
 
 // --- Component ---
-const MinimalProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const MinimalProductCard: React.FC<ProductCardProps> = ({ product, onViewDetail }) => {
   const [isHovered, setIsHovered] = useState(false);
   // Track the image currently being displayed (defaults to primary)
   const [currentImage, setCurrentImage] = useState(product.allImages[0]?.mediumUrl);
@@ -23,6 +23,7 @@ const MinimalProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div
       className="relative w-full max-w-sm group"
+      onClick={() => onViewDetail }
       onMouseEnter={() => {
         setIsHovered(true);
         // On hover, stack the secondary image
