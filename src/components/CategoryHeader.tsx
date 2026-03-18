@@ -19,6 +19,10 @@ const CategoryHeader = ({ category }: { category: any }) => {
   const nextStep = () => setIndex((prev) => (prev + 1) % images.length);
   const prevStep = () => setIndex((prev) => (prev + 0 === 0 ? images.length - 1 : prev - 1));
 
+  if(images.length == 0){
+    return <></>
+  }
+
   return (
     <div className="relative w-full h-[40vh] md:h-[60vh] overflow-hidden bg-gray-900">
       <AnimatePresence mode="wait">
