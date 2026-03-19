@@ -25,6 +25,7 @@ export const getProductImagesFromConfig = (
 
   const productDeatailStyle = companyConfig || company?.productImagesConfiguration
 
+  console.log("productDeatailStyle", productDeatailStyle)
   if(productDeatailStyle){
     return productDeatailStyle as ProductImageStyle
   }

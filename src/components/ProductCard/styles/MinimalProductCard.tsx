@@ -32,7 +32,7 @@ const MinimalProductCard: React.FC<ProductCardProps> = ({ product, onViewDetail 
       onMouseLeave={() => {
         setIsHovered(false);
         // On leave, remove the secondary stack
-        setCurrentImage(product.allImages[0]?.mediumUrl);
+        setCurrentImage(product.allImages[0]?.mediumUrl || currentImage);
       }}
     >
       {/* --- Image Container (Aspect Ratio 1:1) --- */}
@@ -50,7 +50,7 @@ const MinimalProductCard: React.FC<ProductCardProps> = ({ product, onViewDetail 
 
         {/* Secondary Image (Fades in over primary on hover) */}
         <motion.img
-          src={product.allImages[1]?.mediumUrl}
+          src={product.allImages[1]?.mediumUrl || currentImage}
           alt={`${product.name} (Alternative View)`}
           className="absolute inset-0 h-full w-full object-cover z-10"
           initial={{ opacity: 0 }}

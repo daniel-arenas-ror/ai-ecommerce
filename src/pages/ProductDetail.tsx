@@ -34,7 +34,7 @@ const ProductDetail: React.FC = () => {
     <div className="w-full bg-gray-50 min-h-screen">
       
       {/* 1. PRODUCT HEADER CONTAINER */}
-      <header className="sticky top-0 z-10 w-full bg-white border-b border-gray-200 shadow-sm p-6">
+      <header className="sticky top-0 w-full bg-white border-b border-gray-200 shadow-sm p-6">
         <h1 className="text-3xl font-black uppercase tracking-widest text-gray-900">
           {product?.name}
         </h1>
@@ -52,7 +52,7 @@ const ProductDetail: React.FC = () => {
             When you scroll down, this div freezes 112px from the top (offsetting the header) 
             and stays frozen until the parent grid runs out of space. */}
         <div className="sticky top-28 h-[600px] overflow-hidden rounded-[32px] bg-white border border-gray-100 shadow-lg">
-          <ProductImageComponent productImages={product?.allImages} style='"ImageGridGallery"' />
+          <ProductImageComponent productImages={product?.allImages} />
         </div>
 
         {/* --- 2b. PRODUCT DETAIL CONTAINER --- */}
