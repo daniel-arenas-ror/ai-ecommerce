@@ -23,74 +23,61 @@ const ProductDefaultGallery: React.FC<ProductGalleryProps> = ({ images }) => {
   };
 
   return (
-    // MAIN GALLERY GRID (Split layout like your reference)
-    <div className="flex flex-col md:flex-row gap-6 p-4 max-w-7xl mx-auto">
+// Parent container with fixed height from your requirement
+    <div className="flex flex-col md:flex-row gap-6 p-4 max-w-7xl mx-auto h-[600px]">
       
-      {/* --- SIDEBAR: Vertical Thumbnails --- */}
-      <div className="flex flex-col items-center gap-4 w-full md:w-[120px] md:flex-shrink-0">
+      {/* --- SIDEBAR: Now with fixed height and internal scrolling --- */}
+      <div className="flex flex-col items-center w-full md:w-[120px] h-full py-2 bg-white">
         
-        {/* Navigation Arrow Up (Optional, based on number of thumbs) */}
+        {/* Navigation Arrow Up - Fixed at top */}
         <button 
           onClick={prevImage}
-          className="p-1 rounded-full text-gray-400 hover:text-black hover:bg-gray-100"
+          className="mb-2 p-1 rounded-full text-gray-400 hover:text-black hover:bg-gray-100 flex-shrink-0"
         >
-          <ChevronUp size={20} />
+          <ChevronUp size={24} />
         </button>
 
-        {/* The Scrollable Thumbnail Track */}
-        <div className="flex md:flex-col gap-4 overflow-x-auto md:overflow-y-auto no-scrollbar py-1 px-1">
+        {/* --- THUMBNAIL TRACK: This is the scrolling part --- */}
+        <div className="flex md:flex-col gap-4 overflow-x-auto overflow-y-auto no-scrollbar scrollbar-hide flex-grow w-full px-2 scroll-smooth">
           {images.map((image, index) => {
-            // 2. LOGIC: Compare index to determine selected state
             const isSelected = index === selectedIndex;
-            
             return (
               <button
                 key={image.id}
-                onClick={() => setSelectedIndex(index)} // 3. ACTION: Update state on click
-                className={`flex-shrink-0 relative overflow-hidden rounded-xl group transition-all duration-300 ${
+                onClick={() => setSelectedIndex(index)}
+                className={`flex-shrink-0 relative overflow-hidden rounded-xl transition-all duration-300 ${
                   isSelected 
-                    ? 'p-0.5 border-4 border-black scale-105' 
-                    : 'p-0 border-transparent hover:border-gray-200 hover:scale-105'
+                    ? 'ring-4 ring-black ring-offset-2 scale-95' 
+                    : 'opacity-60 hover:opacity-100'
                 }`}
               >
                 <img
-                  src={image.thumbUrl} // Use the Thumb size
-                  alt={`Thumbnail ${index + 1}: ${image.id}`}
-                  className="w-20 h-20 md:w-[100px] md:h-[100px] object-cover rounded-[10px]"
+                  src={image.thumbUrl}
+                  alt={image.id}
+                  className="w-20 h-20 md:w-full md:h-auto aspect-square object-cover rounded-lg"
                 />
-                
-                {/* Subtle overlay effect on hover/select */}
-                <div className={`absolute inset-0 z-10 transition-opacity ${
-                  isSelected ? 'bg-black/10' : 'bg-transparent group-hover:bg-black/5'
-                }`} />
               </button>
             );
           })}
         </div>
 
-        {/* Navigation Arrow Down */}
+        {/* Navigation Arrow Down - Fixed at bottom */}
         <button 
           onClick={nextImage}
-          className="p-1 rounded-full text-gray-400 hover:text-black hover:bg-gray-100"
+          className="mt-2 p-1 rounded-full text-gray-400 hover:text-black hover:bg-gray-100 flex-shrink-0"
         >
-          <ChevronDown size={20} />
+          <ChevronDown size={24} />
         </button>
       </div>
 
-      {/* --- PRINCIPAL VIEW: Large Image & Detailed Zoom --- */}
-      <div className="flex-1 relative aspect-[4/5] overflow-hidden group">
-        
-        {/* Main large image */}
+      {/* --- PRINCIPAL VIEW: Stays flexible --- */}
+      <div className="flex-1 relative h-full overflow-hidden">
         <img
-          src={currentImage.largeUrl} // Use the Large size for best detail
+          src={currentImage.largeUrl}
           alt={currentImage.id}
-          className="absolute inset-0 w-full h-full object-contain mix-blend-multiply origin-center transition-transform duration-500 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-contain p-4 md:p-8"
         />
-
-        {/* Subtle white vignette or gradient effect to make product pop */}
-        <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent pointer-events-none" />
       </div>
-
     </div>
   );
 };
