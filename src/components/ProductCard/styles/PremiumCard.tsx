@@ -15,7 +15,7 @@ const PremiumCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
       className="bg-gradient-to-br from-white to-gray-50 border border-gray-300 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all"
       whileHover={{ y: -8 }}
       transition={{ duration: 0.2 }}
-      onClick={() => onViewDetail }
+      onClick={() => onViewDetail(product) }
     >
       {/* Premium Badge */}
       <div className="absolute top-4 right-4 z-10">

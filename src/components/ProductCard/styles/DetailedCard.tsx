@@ -13,7 +13,7 @@ const DetailedCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onView
       className="bg-white border border-gray-300 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all"
       whileHover={{ y: -6 }}
       transition={{ duration: 0.2 }}
-      onClick={() => onViewDetail }
+      onClick={() => onViewDetail(product) }
     >
       {/* Image with overlay */}
       <div className="h-56 bg-gray-100 overflow-hidden relative group">

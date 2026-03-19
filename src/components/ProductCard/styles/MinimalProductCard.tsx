@@ -23,7 +23,7 @@ const MinimalProductCard: React.FC<ProductCardProps> = ({ product, onViewDetail 
   return (
     <div
       className="relative w-full max-w-sm group"
-      onClick={() => onViewDetail }
+      onClick={() => onViewDetail(product) }
       onMouseEnter={() => {
         setIsHovered(true);
         // On hover, stack the secondary image

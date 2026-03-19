@@ -39,6 +39,10 @@ const buildRansackFilter = () => {
 
   if (loading) return <div>Loading...</div>;
 
+  const productDeatailAction = (productSlug: string) => {
+    navigate(`/products/${productSlug}`)
+  }
+
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 px-4 py-8">
       {products.map((product) => (
@@ -46,7 +50,7 @@ const buildRansackFilter = () => {
           key={product.id}
           product={product}
           onAddToCart={() => console.log('Added to cart:', product.name)}
-          onViewDetail={() =>  navigate(`/profile/${product.slug}`) }
+          onViewDetail={(product) => productDeatailAction(product.slug) }
         />
       ))}
     </div>

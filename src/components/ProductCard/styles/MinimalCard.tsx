@@ -13,7 +13,7 @@ const MinimalCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
       className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
-      onClick={() => onViewDetail }
+      onClick={() => onViewDetail(product) }
     >
       {/* Image */}
       <div className="h-40 bg-gray-100 overflow-hidden">
