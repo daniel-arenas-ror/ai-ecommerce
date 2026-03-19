@@ -1,9 +1,9 @@
-import type { Product } from '../../types/product';
+import type { productImages } from '../../types/product';
 
 export type ProductImageStyle = 'default'
 
 export interface ProductImagesProps {
-  product: Product;
+  images: productImages[];
 }
 
 export interface ProductImageComponent {
