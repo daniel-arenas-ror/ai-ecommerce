@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import type { productImages } from '../../../types/product';
+import './default.css'
 
 interface ProductGalleryProps {
   images: productImages[];
@@ -75,7 +76,7 @@ const ProductDefaultGallery: React.FC<ProductGalleryProps> = ({ images }) => {
         <img
           src={currentImage.largeUrl}
           alt={currentImage.id}
-          className="absolute inset-0 w-full h-full object-contain p-4 md:p-8"
+          className="absolute inset-0 w-full h-full object-contain"
         />
       </div>
     </div>
