@@ -6,6 +6,7 @@ export interface Product {
   price: number;
   allImages: productImages[];
   optionValues: optionValues[];
+  variants: variants[];
 }
 
 export interface productImages {
@@ -21,4 +22,12 @@ export interface optionValues {
   name: string;
   label: string;
   optionTypeName: string;
+}
+
+export interface variants {
+  id: number;
+  sku: string;
+  price: number;
+  optionValues: optionValues[];
+  images: productImages[];
 }
