@@ -1,4 +1,5 @@
 import ProductDefaultGallery from './styles/default';
+import imageGridGallery from './styles/imageGridGallery';
 import { useCompany } from '../../context/CompanyContext';
 import type { ProductImageStyle, ProductImageComponent } from './types'
 
@@ -6,6 +7,10 @@ export const cardFactory = (style: ProductImageStyle = 'default'): ProductImageC
   const productDetailRegistry: Record<ProductImageStyle, ProductImageComponent> ={
     default: {
       component: ProductDefaultGallery,
+      description: 'Default Design',
+    },
+    imageGridGallery: {
+      component: imageGridGallery,
       description: 'Default Design',
     },
   };

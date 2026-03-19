@@ -1,6 +1,6 @@
 import type { productImages } from '../../types/product';
 
-export type ProductImageStyle = 'default'
+export type ProductImageStyle = 'default' | 'imageGridGallery'
 
 export interface ProductImagesProps {
   images: productImages[];
