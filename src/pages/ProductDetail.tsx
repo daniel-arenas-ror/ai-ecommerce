@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client/react";
 import type { Product } from '../types/product';
 import { GET_PRODUCT_DETAIL } from '../api/queries/product';
 import ProductDetailComponent from '../components/ProductDetailComponent'
+import ProductImageComponent from '../components/ProductImages'
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,6 +24,8 @@ const ProductDetail: React.FC = () => {
     }
   }, [data?.product]);
 
+  if (product === undefined) return <div>Loading...</div>;
+
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -33,10 +36,10 @@ const ProductDetail: React.FC = () => {
       {/* 1. PRODUCT HEADER CONTAINER */}
       <header className="sticky top-0 z-10 w-full bg-white border-b border-gray-200 shadow-sm p-6">
         <h1 className="text-3xl font-black uppercase tracking-widest text-gray-900">
-          Super Product
+          {product?.name}
         </h1>
         <p className="text-sm text-gray-600 mt-1">
-          Sku: #00123
+          Sku: {product?.code}
         </p>
       </header>
 
@@ -49,13 +52,7 @@ const ProductDetail: React.FC = () => {
             When you scroll down, this div freezes 112px from the top (offsetting the header) 
             and stays frozen until the parent grid runs out of space. */}
         <div className="sticky top-28 h-[600px] overflow-hidden rounded-[32px] bg-white border border-gray-100 shadow-lg">
-          <img 
-            src="https://source.unsplash.com/random/800x1200/?product,shoes" 
-            alt="Main product" 
-            className="w-full h-full object-cover" 
-          />
-          {/* Subtle overlay */}
-          <div className="absolute inset-0 bg-black/10 z-10" />
+          <ProductImageComponent productImages={product?.allImages} />
         </div>
 
         {/* --- 2b. PRODUCT DETAIL CONTAINER --- */}
