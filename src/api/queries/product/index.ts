@@ -64,6 +64,7 @@ query getproduct($companyId: ID!, $productSlug: ID!) {
         id
         name
         label
+        optionTypeName
       }
       images{
         id

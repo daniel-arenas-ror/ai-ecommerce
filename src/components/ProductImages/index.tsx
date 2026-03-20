@@ -4,7 +4,7 @@ import { getProductImagesFromConfig, cardFactory } from "./factory"
 import type { productImages } from '../../types/product';
 
 interface ProductDetailProps {
-  productImages: productImages[];
+  productImages: productImages[] | undefined;
   style?: ProductImageStyle;
   config?: Record<string, unknown>;
 }
@@ -14,14 +14,14 @@ const ProductImageComponent: React.FC<ProductDetailProps> = ({
   style: explicitStyle,
   config,
 }) => {
+  if(productImages === undefined) return <div></div>;
 
   const style = explicitStyle || getProductImagesFromConfig(config)
 
   const { component: CardComponent } = cardFactory(style)
 
   return (
-    <CardComponent
-      images={productImages}
+    <CardComponent images={productImages}
     />
   )
 }

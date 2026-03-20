@@ -1,4 +1,4 @@
-import OptionType from './option_types'
+import type { OptionType } from './option_types'
 
 export interface Product {
   id: number;
@@ -32,6 +32,7 @@ export interface variants {
   id: number;
   sku: string;
   price: number;
+  optionTypeName: string;
   optionValues: optionValues[];
   images: productImages[];
 }

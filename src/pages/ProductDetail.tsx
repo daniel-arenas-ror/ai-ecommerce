@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from "@apollo/client/react";
-import type { Product } from '../types/product';
+import type { Product, productImages, variants } from '../types/product';
 import { GET_PRODUCT_DETAIL } from '../api/queries/product';
 import ProductDetailComponent from '../components/ProductDetailComponent'
 import ProductImageComponent from '../components/ProductImages'
@@ -9,6 +9,10 @@ import ProductImageComponent from '../components/ProductImages'
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [ product, setProduct ] = useState<Product>();
+  const [images, setImages] = useState<productImages[]>();
+  const [selections, setSelections] = useState<Record<string, string>>({});
+  const [variantSelected, setVariantSelected] = useState<variants>();
+  const [productVariants, setProductVariants] = useState<variants[]>();
 
   const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
   const { loading, data } = useQuery<{ product: Product }>(GET_PRODUCT_DETAIL, {
@@ -18,15 +22,34 @@ const ProductDetail: React.FC = () => {
     }
   });
 
+  const selectedVariant = useMemo(() => {
+    return productVariants?.find((variant: any) => {
+      if (variant.optionValues.length === 0) return false;
+      // Check if EVERY optionValue in this variant matches the user's selection
+      return variant?.optionValues?.every((optValue: any) => {
+        return selections[optValue.optionTypeName] === optValue.id;
+      });
+    });
+  }, [selections, productVariants]);
+
   useEffect(() => {
     if (data?.product) {
       setProduct(data.product);
+      setImages(data.product?.allImages);
+      setVariantSelected(data.product?.variants[0]);
+      setProductVariants(data.product?.variants)
     }
   }, [data?.product]);
 
   if (product === undefined) return <div>Loading...</div>;
-
   if (loading) return <div>Loading...</div>;
+
+  const handleSelect = (typeName: string, valueName: string) => {
+    setSelections(prev => ({
+      ...prev,
+      [typeName]: valueName
+    }));
+  };
 
   return (
     // MAIN CONTAINER - 
@@ -52,7 +75,7 @@ const ProductDetail: React.FC = () => {
             When you scroll down, this div freezes 112px from the top (offsetting the header) 
             and stays frozen until the parent grid runs out of space. */}
         <div className="sticky top-28 h-[600px] overflow-hidden rounded-[32px] bg-white border border-gray-100 shadow-lg">
-          <ProductImageComponent productImages={product?.allImages} />
+          <ProductImageComponent productImages={selectedVariant?.images || images} />
         </div>
 
         {/* --- 2b. PRODUCT DETAIL CONTAINER --- */}
@@ -62,13 +85,23 @@ const ProductDetail: React.FC = () => {
           <ProductDetailComponent product={product} />
 
           <div className="bg-white p-10 rounded-[32px] border border-gray-100 shadow-lg">
-            <h3 className="font-semibold text-lg mb-2">Key Highlights</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-2 text-sm">
-              <li>Responsive cushioning</li>
-              <li>Lightweight, flexible design</li>
-              <li>Engineered mesh upper for breathability</li>
-              <li>Durable rubber outsole</li>
-            </ul>
+            <h3>Opciones</h3>
+            {product?.groupedOptionValues.map((optionType) => (
+              <div key={optionType.id}>
+                <p>{optionType.name}</p>
+
+                {optionType.optionValues.map((optionValue: any) => (
+                  <button
+                    className='m-2 min-w-[60px] text-center px-4 py-2 border border-gray-200 rounded text-sm font-medium text-gray-700 hover:border-black hover:text-black hover:shadow-sm'
+                    key={optionValue.id}
+                    onClick={() => handleSelect(optionType.name, optionValue.id)}
+                  >
+                    {optionValue.name}
+                  </button>
+                ))}
+                <hr />
+              </div>
+            ))}
           </div>
 
           <div className="h-[400px] bg-gray-100 rounded-[32px] flex items-center justify-center text-gray-400 text-sm italic">
