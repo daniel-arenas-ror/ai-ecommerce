@@ -27,57 +27,66 @@ export const GET_PRODUCT_BY_CATEGORY = gql`
 `;
 
 export const GET_PRODUCT_DETAIL = gql`
-  query getproduct($companyId: ID!, $productSlug: ID!) {
-    product(companyId: $companyId, productSlug: $productSlug) {
+query getproduct($companyId: ID!, $productSlug: ID!) {
+  product(companyId: $companyId, productSlug: $productSlug) {
+    id
+    name
+    description
+    slug
+    price
+    active
+    __typename
+    groupedOptionValues {
       id
       name
-      description
-      slug
-      price
-      active
-      __typename
-      categories {
-        id
-        name
-        slug
-      }
       optionValues {
         id
         name
         label
-        optionTypeName
       }
-      variants {
+    }
+    categories {
+      id
+      name
+      slug
+    }
+    optionValues {
+      id
+      name
+      label
+      optionTypeName
+    }
+    variants {
+      id
+      sku
+      price
+      optionValues {
         id
-        sku
-        price
-        optionValues {
-          id
-          name
-          label
-        }
-        images{
-          id
-          url
-          thumbUrl
-          mediumUrl
-          largeUrl
-        }
+        name
+        label
       }
-      images {
+      images{
         id
         url
         thumbUrl
         mediumUrl
         largeUrl
       }
-      allImages {
-        id
-        url
-        thumbUrl
-        mediumUrl
-        largeUrl 
-      }
+    }
+    images {
+      id
+      url
+      thumbUrl
+      mediumUrl
+      largeUrl
+    }
+    allImages {
+      id
+      url
+      thumbUrl
+      mediumUrl
+      largeUrl 
     }
   }
+}
 `;

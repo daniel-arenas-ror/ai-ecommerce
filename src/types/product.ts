@@ -1,3 +1,5 @@
+import OptionType from './option_types'
+
 export interface Product {
   id: number;
   name: string;
@@ -8,6 +10,7 @@ export interface Product {
   allImages: productImages[];
   optionValues: optionValues[];
   variants: variants[];
+  groupedOptionValues: OptionType[];
 }
 
 export interface productImages {
