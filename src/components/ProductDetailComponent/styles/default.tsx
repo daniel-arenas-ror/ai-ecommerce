@@ -12,8 +12,9 @@ const DefaultProductDetail: React.FC<ProductDetailCardProps> = ({ product }) => 
       <p className="text-gray-600 leading-relaxed">
         {product.description}
       </p>
-
-      <button>Agregar al carrito</button>
+      <p className="text-gray-600 leading-relaxed">
+        {product.price}
+      </p>
     </div>
   );
 }
