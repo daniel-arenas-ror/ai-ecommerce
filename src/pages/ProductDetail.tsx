@@ -103,9 +103,6 @@ const ProductDetail: React.FC = () => {
                     );
                   })}
                 </div>
-                
-                {/* Decorative divider except for the last item */}
-                <div className="pt-4 border-b border-gray-50 last:border-0" />
               </div>
             ))}
           </div>
