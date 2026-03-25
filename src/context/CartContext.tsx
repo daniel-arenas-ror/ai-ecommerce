@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import type { Product } from '../types/types';
+import type { variant } from '../types/product';
 
 interface CartContextType {
-  items: Product[];
-  addItem: (product: Product) => void;
-  removeItem: (productId: number) => void;
+  items: variant[];
+  addItem: (variant: variant) => void;
+  removeItem: (variantId: number) => void;
   clearCart: () => void;
   itemsCount: number;
 }
@@ -12,7 +12,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [items, setItems] = useState<Product[]>(() => {
+  const [items, setItems] = useState<variant[]>(() => {
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
   });
@@ -21,7 +21,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addItem = (product: Product) => {
+  const addItem = (product: variant) => {
     setItems((prev) => [...prev, product]);
   };
 

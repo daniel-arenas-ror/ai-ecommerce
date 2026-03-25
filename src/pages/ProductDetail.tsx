@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from "@apollo/client/react";
-import type { Product, productImages, variants } from '../types/product';
+import type { Product, productImages, variant } from '../types/product';
 import { GET_PRODUCT_DETAIL } from '../api/queries/product';
 import ProductDetailComponent from '../components/ProductDetailComponent'
 import ProductImageComponent from '../components/ProductImages'
@@ -12,14 +12,12 @@ const ProductDetail: React.FC = () => {
   const [ product, setProduct ] = useState<Product>();
   const [images, setImages] = useState<productImages[]>();
   const [selections, setSelections] = useState<Record<string, string>>({});
-  const [productVariants, setProductVariants] = useState<variants[]>();
+  const [productVariants, setProductVariants] = useState<variant[]>();
 
   const [quantity, setQuantity] = useState(1);
 
   const increment = () => setQuantity((prev) => prev + 1);
   const decrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-
-  const subtotal = product?.price ? (product.price * quantity).toFixed(2) : 0;
 
   const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
   const { loading, data } = useQuery<{ product: Product }>(GET_PRODUCT_DETAIL, {

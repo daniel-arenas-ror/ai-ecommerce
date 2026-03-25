@@ -10,7 +10,7 @@ export interface Product {
   formattedPrice: string;
   allImages: productImages[];
   optionValues: optionValues[];
-  variants: variants[];
+  variants: variant[];
   groupedOptionValues: OptionType[];
 }
 
@@ -29,7 +29,7 @@ export interface optionValues {
   optionTypeName: string;
 }
 
-export interface variants {
+export interface variant {
   id: number;
   sku: string;
   price: number;
