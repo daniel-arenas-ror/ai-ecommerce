@@ -73,7 +73,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
           className="flex items-center justify-between"
         >
           <div className="flex gap-4 text-xs font-bold tracking-tighter">
-            <span className={isHovered ? 'text-white' : 'text-gray-400'}>{product.price}</span>
+            <span className={isHovered ? 'text-white' : 'text-gray-400'}>{product.formattedPrice}</span>
           </div>
 
           <motion.button

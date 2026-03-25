@@ -7,6 +7,7 @@ export interface Product {
   code: string;
   description: string;
   price: number;
+  formattedPrice: string;
   allImages: productImages[];
   optionValues: optionValues[];
   variants: variants[];
@@ -32,6 +33,7 @@ export interface variants {
   id: number;
   sku: string;
   price: number;
+  formattedPrice: string;
   optionTypeName: string;
   optionValues: optionValues[];
   images: productImages[];

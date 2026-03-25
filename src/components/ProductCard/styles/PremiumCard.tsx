@@ -49,7 +49,7 @@ const PremiumCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
 
         {/* Price */}
         <div className="mb-4">
-          <p className="text-3xl font-bold text-blue-600">${product.price}</p>
+          <p className="text-3xl font-bold text-blue-600">{product.formattedPrice}</p>
         </div>
 
         {/* Actions */}

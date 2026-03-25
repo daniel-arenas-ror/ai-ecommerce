@@ -8,6 +8,7 @@ export const GET_PRODUCT_BY_CATEGORY = gql`
       description
       slug
       price
+      formattedPrice
       active
       optionValues {
         id
@@ -34,6 +35,7 @@ query getproduct($companyId: ID!, $productSlug: ID!) {
     description
     slug
     price
+    formattedPrice
     active
     __typename
     groupedOptionValues {
@@ -60,6 +62,7 @@ query getproduct($companyId: ID!, $productSlug: ID!) {
       id
       sku
       price
+      formattedPrice
       optionValues {
         id
         name

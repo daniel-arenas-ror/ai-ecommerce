@@ -14,12 +14,6 @@ const MinimalProductCard: React.FC<ProductCardProps> = ({ product, onViewDetail 
   // Track the image currently being displayed (defaults to primary)
   const [currentImage, setCurrentImage] = useState(product.allImages[0]?.mediumUrl);
 
-  // Helper to get formatted price
-  const formatPrice = (price: string | number) => {
-    const num = typeof price === 'string' ? parseFloat(price.replace(/[^0-9.-]+/g,"")) : price;
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
-  };
-
   return (
     <div
       className="relative w-full max-w-sm group"
@@ -65,7 +59,7 @@ const MinimalProductCard: React.FC<ProductCardProps> = ({ product, onViewDetail 
           {product.name}
         </h3>
         <p className="text-base font-semibold text-gray-900">
-          {formatPrice(product.price)}
+          {product.formattedPrice}
         </p>
       </div>
 

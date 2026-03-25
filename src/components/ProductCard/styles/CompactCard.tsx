@@ -28,7 +28,7 @@ const CompactCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
       <div className="flex-1 p-3 flex flex-col justify-between">
         <div>
           <h3 className="font-semibold text-gray-800 text-sm truncate">{product.name}</h3>
-          <p className="text-blue-600 font-bold text-base">${product.price}</p>
+          <p className="text-blue-600 font-bold text-base">{product.formattedPrice}</p>
         </div>
 
         <motion.button

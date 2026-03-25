@@ -46,7 +46,7 @@ const DetailedCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onView
         <div className="border-t border-gray-200 pt-4">
           <div className="flex items-center justify-between mb-4">
             <span className="text-gray-600 text-sm">Price</span>
-            <span className="text-2xl font-bold text-blue-600">${product.price}</span>
+            <span className="text-2xl font-bold text-blue-600">{product.formattedPrice}</span>
           </div>
 
           <div className="flex gap-3">

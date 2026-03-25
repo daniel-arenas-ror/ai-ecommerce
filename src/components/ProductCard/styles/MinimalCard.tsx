@@ -27,7 +27,7 @@ const MinimalCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onViewD
       {/* Content */}
       <div className="p-3">
         <h3 className="font-semibold text-gray-800 text-sm truncate">{product.name}</h3>
-        <p className="text-blue-600 font-bold text-lg mt-1">${product.price}</p>
+        <p className="text-blue-600 font-bold text-lg mt-1">{product.formattedPrice}</p>
         
         <motion.button
           whileTap={{ scale: 0.95 }}
