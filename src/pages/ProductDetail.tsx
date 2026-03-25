@@ -5,6 +5,7 @@ import type { Product, productImages, variants } from '../types/product';
 import { GET_PRODUCT_DETAIL } from '../api/queries/product';
 import ProductDetailComponent from '../components/ProductDetailComponent'
 import ProductImageComponent from '../components/ProductImages'
+import { Minus, Plus } from 'lucide-react';
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,6 +13,13 @@ const ProductDetail: React.FC = () => {
   const [images, setImages] = useState<productImages[]>();
   const [selections, setSelections] = useState<Record<string, string>>({});
   const [productVariants, setProductVariants] = useState<variants[]>();
+
+  const [quantity, setQuantity] = useState(1);
+
+  const increment = () => setQuantity((prev) => prev + 1);
+  const decrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+
+  const subtotal = product?.price ? (product.price * quantity).toFixed(2) : 0;
 
   const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
   const { loading, data } = useQuery<{ product: Product }>(GET_PRODUCT_DETAIL, {
@@ -105,6 +113,46 @@ const ProductDetail: React.FC = () => {
                 </div>
               </div>
             ))}
+
+            <div className="space-y-6 pt-6">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-900">
+                  Cantidad:
+                </label>
+                
+                <div className="flex items-center w-fit border border-gray-300">
+                  <button
+                    onClick={decrement}
+                    className="p-3 hover:bg-gray-50 text-gray-600 transition-colors"
+                    aria-label="Decrease quantity"
+                  >
+                    <Minus size={16} strokeWidth={3} />
+                  </button>
+                  
+                  <div className="w-12 text-center font-medium text-gray-900 select-none">
+                    {quantity}
+                  </div>
+                  
+                  <button
+                    onClick={increment}
+                    className="p-3 hover:bg-gray-50 text-gray-600 transition-colors"
+                    aria-label="Increase quantity"
+                  >
+                    <Plus size={16} strokeWidth={3} />
+                  </button>
+                </div>
+              </div>
+
+              {/* --- ACTION BUTTON --- */}
+              <button 
+                className="w-full bg-[#1A1A1A] hover:bg-black text-white font-black uppercase tracking-widest py-5 px-8 transition-all active:scale-[0.98] shadow-sm"
+              >
+                Agregar al carrito
+              </button>
+            </div>
+
+
+
           </div>
 
           <div className="h-[400px] bg-gray-100 rounded-[32px] flex items-center justify-center text-gray-400 text-sm italic">
