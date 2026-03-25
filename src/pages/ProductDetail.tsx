@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from "@apollo/client/react";
 import type { Product, productImages, variant } from '../types/product';
@@ -6,6 +6,7 @@ import { GET_PRODUCT_DETAIL } from '../api/queries/product';
 import ProductDetailComponent from '../components/ProductDetailComponent'
 import ProductImageComponent from '../components/ProductImages'
 import { Minus, Plus } from 'lucide-react';
+import { useCart } from '../context/CartContext'
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +14,7 @@ const ProductDetail: React.FC = () => {
   const [images, setImages] = useState<productImages[]>();
   const [selections, setSelections] = useState<Record<string, string>>({});
   const [productVariants, setProductVariants] = useState<variant[]>();
+  const { addItem } = useCart();
 
   const [quantity, setQuantity] = useState(1);
 
@@ -57,7 +59,7 @@ const ProductDetail: React.FC = () => {
 
   return (
     <div className="w-full bg-gray-50 min-h-screen">
-      <header className="sticky top-0 w-full bg-white border-b border-gray-200 shadow-sm p-6">
+      <header className="sticky top-0 w-full bg-white border-b border-gray-200 shadow-sm p-4">
         <h1 className="text-3xl font-black uppercase tracking-widest text-gray-900">
           {product?.name}
         </h1>
@@ -144,6 +146,7 @@ const ProductDetail: React.FC = () => {
               {/* --- ACTION BUTTON --- */}
               <button 
                 className="w-full bg-[#1A1A1A] hover:bg-black text-white font-black uppercase tracking-widest py-5 px-8 transition-all active:scale-[0.98] shadow-sm"
+                onClick={() => addItem(selectedVariant)}
               >
                 Agregar al carrito
               </button>

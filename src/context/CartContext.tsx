@@ -21,8 +21,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addItem = (product: variant) => {
-    setItems((prev) => [...prev, product]);
+  const addItem = (variant: variant) => {
+    setItems((prev) => [...prev, variant]);
   };
 
   const removeItem = (productId: number) => {
