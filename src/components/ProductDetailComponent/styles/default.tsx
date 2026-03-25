@@ -13,7 +13,7 @@ const DefaultProductDetail: React.FC<ProductDetailCardProps> = ({ product }) => 
         {product.description}
       </p>
       <p className="text-gray-600 leading-relaxed">
-        {product.price}
+        {product.formattedPrice}
       </p>
     </div>
   );
