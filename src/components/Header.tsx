@@ -13,7 +13,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = () => {
   const { isAuthenticated, logout } = useAuth();
-  const { items } = useCart();
+  const { items, toggleCart } = useCart();
   const { company } = useCompany();
   const cartLength = items.length;
   const controls = useAnimation();
@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = () => {
         </div>
         <motion.button
           animate={controls}
-          onClick={() => {}}
+          onClick={toggleCart}
           className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
         >
           <ShoppingCart size={24} />
