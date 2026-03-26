@@ -2,17 +2,23 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { variant } from '../types/product';
 
 interface CartContextType {
-  items: variant[];
+  items: CartItem[];
   addItem: (variant: variant) => void;
   removeItem: (variantId: number) => void;
   clearCart: () => void;
   itemsCount: number;
 }
 
+interface CartItem {
+  variantId: string | number;
+  quantity: number;
+  variant: variant;
+}
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [items, setItems] = useState<variant[]>(() => {
+  const [items, setItems] = useState<CartItem[]>(() => {
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
   });
@@ -21,12 +27,38 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addItem = (variant: variant) => {
-    setItems((prev) => [...prev, variant]);
+  const addItem = (variant: variant, amount: number = 1) => {
+    setItems((prev) => {
+      const existingItem = prev.find((item) => item.variantId === variant.id);
+
+      if (existingItem) {
+        return prev.map((item) =>
+          item.variantId === variant.id
+            ? { ...item, quantity: item.quantity + amount }
+            : item
+        );
+      }
+
+      return [...prev, { variantId: variant.id, quantity: amount, variant }];
+    });
   };
 
-  const removeItem = (productId: number) => {
-    setItems((prev) => prev.filter((p) => p.id !== productId));
+  const removeItem = (variant: variant, amount: number = 1) => {
+    setItems((prev) => {
+      const existingItem = prev.find((item) => item.variantId === variant.id);
+
+      if (!existingItem) return prev;
+
+      if (existingItem.quantity > amount) {
+        return prev.map((item) =>
+          item.variantId === variant.id
+            ? { ...item, quantity: item.quantity - amount }
+            : item
+        );
+      }
+
+      return prev.filter((item) => item.variantId !== variant.id);
+    });
   };
 
   const clearCart = () => setItems([]);
