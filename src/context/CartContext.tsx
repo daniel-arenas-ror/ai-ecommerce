@@ -4,9 +4,11 @@ import type { variant } from '../types/product';
 interface CartContextType {
   items: CartItem[];
   addItem: (variant: variant) => void;
-  removeItem: (variantId: number) => void;
+  removeItem: (variant: variant) => void;
   clearCart: () => void;
   itemsCount: number;
+  isOpen: boolean;
+  toggleCart: () => void;
 }
 
 interface CartItem {
@@ -18,6 +20,7 @@ interface CartItem {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState<CartItem[]>(() => {
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
@@ -63,12 +66,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const clearCart = () => setItems([]);
 
+  const toggleCart = () => {
+    setIsOpen(!isOpen)
+  }
+
   const value: CartContextType = {
     items,
     addItem,
     removeItem,
     clearCart,
     itemsCount: items.length,
+    isOpen,
+    toggleCart
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
