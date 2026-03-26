@@ -32,7 +32,6 @@ const ProductDetail: React.FC = () => {
   const selectedVariant = useMemo(() => {
     return productVariants?.find((variant: any) => {
       if (variant.optionValues.length === 0) return false;
-      // Check if EVERY optionValue in this variant matches the user's selection
       return variant?.optionValues?.every((optValue: any) => {
         return selections[optValue.optionTypeName] === optValue.id;
       });
@@ -146,7 +145,7 @@ const ProductDetail: React.FC = () => {
               {/* --- ACTION BUTTON --- */}
               <button 
                 className="w-full bg-[#1A1A1A] hover:bg-black text-white font-black uppercase tracking-widest py-5 px-8 transition-all active:scale-[0.98] shadow-sm"
-                onClick={() => addItem(selectedVariant)}
+                onClick={() => addItem({variant: selectedVariant, amount: quantity})}
               >
                 Agregar al carrito
               </button>
