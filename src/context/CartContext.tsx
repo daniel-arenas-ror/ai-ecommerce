@@ -31,6 +31,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [items]);
 
   const addItem = (variant: variant, amount: number = 1) => {
+
+    console.log('Adding to cart:', variant, 'Amount:', amount);
+
     setItems((prev) => {
       const existingItem = prev.find((item) => item.variantId === variant.id);
 

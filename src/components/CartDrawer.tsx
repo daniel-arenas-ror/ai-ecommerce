@@ -12,6 +12,13 @@ const CartDrawer = () => {
 
   if (!isOpen) return null;
 
+  console.log("items en el carrito:", items);
+
+  items.forEach(item => {
+    console.log('Variant:', item.variant);
+    console.log('Quantity:', item.quantity);
+  });
+
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
       <div className="absolute inset-0" onClick={toggleCart} />
@@ -30,10 +37,13 @@ const CartDrawer = () => {
           ) : (
             items.map((item, index) => (
               <div key={`${item.variant.id}-${index}`} className="flex gap-4 border-b pb-4">
-                <img src={item.variant.images[0].mediumUrl} className="w-16 h-16 object-cover rounded" alt={item.variant.sku} />
+                <img src={item.variant?.images[0]?.mediumUrl} className="w-16 h-16 object-cover rounded" alt={item.variant.sku} />
                 <div className="flex-1">
                   <h4 className="font-medium">{item.variant.sku}</h4>
                   <p className="text-blue-600 font-bold">{item.variant.formattedPrice}</p>
+                </div>
+                <div className="flex-1">
+                  <p className="text-lg text-gray-500">{item.quantity}</p>
                 </div>
                 <button 
                   onClick={() => removeItem(item.variant)}

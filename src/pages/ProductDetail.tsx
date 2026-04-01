@@ -30,6 +30,10 @@ const ProductDetail: React.FC = () => {
   });
 
   const selectedVariant = useMemo(() => {
+
+    console.log('Current Selections:', selections);
+    console.log('productVariants:', productVariants);
+
     const hasSelections = Object.keys(selections).length > 0;
 
     const matchedVariant = hasSelections 
@@ -40,6 +44,8 @@ const ProductDetail: React.FC = () => {
         });
       })
     : null;
+
+    console.log('Matched Variant:', matchedVariant);
 
     if (!matchedVariant) {
       return productVariants?.find((variant: any) => variant.isMaster === true);
@@ -77,16 +83,18 @@ const ProductDetail: React.FC = () => {
 
       <div className="grid grid-cols-2 gap-12 p-8 max-w-7xl mx-auto items-start">
         <div className="sticky top-28 h-[600px] overflow-hidden rounded-[32px] bg-white border border-gray-100 shadow-lg">
-          <ProductImageComponent productImages={selectedVariant?.images || images} />
+          <ProductImageComponent productImages={selectedVariant?.images?.length > 0 ? selectedVariant?.images : images} />
         </div>
 
         <div className="space-y-10">
           <ProductDetailComponent product={product} />
 
           <div className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-xl space-y-8">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-400">
-              Configuración de Producto
-            </h3>
+            {productVariants?.length !== 1 && (
+              <h3 className="text-xs font-black uppercase tracking-widest text-gray-400">
+                Configuración de Producto
+              </h3>
+            )}
 
             {product?.groupedOptionValues.map((optionType) => (
               <div key={optionType.id} className="space-y-4">
@@ -121,7 +129,7 @@ const ProductDetail: React.FC = () => {
               </div>
             ))}
 
-            <div className="space-y-6 pt-6">
+            <div className="space-y-6">
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-gray-900">
                   Cantidad:
@@ -153,14 +161,11 @@ const ProductDetail: React.FC = () => {
               {/* --- ACTION BUTTON --- */}
               <button 
                 className="w-full bg-[#1A1A1A] hover:bg-black text-white font-black uppercase tracking-widest py-5 px-8 transition-all active:scale-[0.98] shadow-sm"
-                onClick={() => addItem({variant: selectedVariant, amount: quantity})}
+                onClick={() => addItem(selectedVariant, quantity)}
               >
                 Agregar al carrito
               </button>
             </div>
-
-
-
           </div>
 
           <div className="h-[400px] bg-gray-100 rounded-[32px] flex items-center justify-center text-gray-400 text-sm italic">
