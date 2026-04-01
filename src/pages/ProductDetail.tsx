@@ -46,7 +46,7 @@ const ProductDetail: React.FC = () => {
           return selections[optValue.optionTypeName] === optValue.id;
         });
       })
-    : productVariants?.[0];
+    : productVariants?.find((variant: any) => !variant.isMaster) || productVariants?.[0]; // Fallback to master or first variant if no selections
 
     console.log("Matched Variant:", matchedVariant);
 

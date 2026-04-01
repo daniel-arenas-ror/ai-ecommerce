@@ -39,7 +39,7 @@ const CartDrawer = () => {
               <div key={`${item.variant.id}-${index}`} className="flex gap-4 border-b pb-4">
                 <img src={item.variant?.images[0]?.mediumUrl} className="w-16 h-16 object-cover rounded" alt={item.variant.sku} />
                 <div className="flex-1">
-                  <h4 className="font-medium">{item.variant.sku}</h4>
+                  <h4 className="font-medium">{item.variant.name}-{item.variant.sku}</h4>
                   <p className="text-blue-600 font-bold">{item.variant.formattedPrice}</p>
                 </div>
                 <div className="flex-1">

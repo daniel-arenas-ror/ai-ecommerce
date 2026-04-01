@@ -62,6 +62,7 @@ query getproduct($companyId: ID!, $productSlug: ID!) {
       id
       sku
       price
+      name
       isMaster
       formattedPrice
       optionValues {
