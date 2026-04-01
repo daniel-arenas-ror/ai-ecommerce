@@ -33,6 +33,7 @@ export interface variant {
   id: number;
   sku: string;
   price: number;
+  isMaster: boolean;
   formattedPrice: string;
   optionTypeName: string;
   optionValues: optionValues[];

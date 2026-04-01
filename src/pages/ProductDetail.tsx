@@ -30,12 +30,20 @@ const ProductDetail: React.FC = () => {
   });
 
   const selectedVariant = useMemo(() => {
-    return productVariants?.find((variant: any) => {
-      if (variant.optionValues.length === 0) return false;
-      return variant?.optionValues?.every((optValue: any) => {
-        return selections[optValue.optionTypeName] === optValue.id;
-      });
-    });
+    const hasSelections = Object.keys(selections).length > 0;
+
+    const matchedVariant = hasSelections 
+    ? productVariants?.find((variant: any) => {
+        if (variant.optionValues.length === 0) return false;
+        return variant.optionValues.every((optValue: any) => {
+          return selections[optValue.optionTypeName] === optValue.id;
+        });
+      })
+    : null;
+
+    if (!matchedVariant) {
+      return productVariants?.find((variant: any) => variant.isMaster === true);
+    }
   }, [selections, productVariants]);
 
   useEffect(() => {
