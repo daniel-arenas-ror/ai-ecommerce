@@ -74,8 +74,8 @@ const ProductDefaultGallery: React.FC<ProductGalleryProps> = ({ images }) => {
       {/* --- PRINCIPAL VIEW: Stays flexible --- */}
       <div className="flex-1 relative h-full overflow-hidden">
         <img
-          src={currentImage?.largeUrl}
-          alt={currentImage?.id}
+          src={currentImage?.largeUrl || images?.[0].largeUrl}
+          alt={currentImage?.id || images?.[0].id}
           className="absolute inset-0 w-full h-full object-contain"
         />
       </div>

@@ -16,7 +16,7 @@ const ProductDetail: React.FC = () => {
   const [productVariants, setProductVariants] = useState<variant[]>();
   const { addItem } = useCart();
 
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState<number>(1);
 
   const increment = () => setQuantity((prev) => prev + 1);
   const decrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
@@ -30,9 +30,12 @@ const ProductDetail: React.FC = () => {
   });
 
   const selectedVariant = useMemo(() => {
-
     console.log('Current Selections:', selections);
     console.log('productVariants:', productVariants);
+
+    if(productVariants?.length === 1){
+      return productVariants[0];
+    }
 
     const hasSelections = Object.keys(selections).length > 0;
 
@@ -43,13 +46,16 @@ const ProductDetail: React.FC = () => {
           return selections[optValue.optionTypeName] === optValue.id;
         });
       })
-    : null;
+    : productVariants?.[0];
 
-    console.log('Matched Variant:', matchedVariant);
+    console.log("Matched Variant:", matchedVariant);
 
-    if (!matchedVariant) {
-      return productVariants?.find((variant: any) => variant.isMaster === true);
+    if(hasSelections){
+      setImages(matchedVariant?.images);
     }
+
+    return matchedVariant;
+
   }, [selections, productVariants]);
 
   useEffect(() => {
@@ -83,7 +89,7 @@ const ProductDetail: React.FC = () => {
 
       <div className="grid grid-cols-2 gap-12 p-8 max-w-7xl mx-auto items-start">
         <div className="sticky top-28 h-[600px] overflow-hidden rounded-[32px] bg-white border border-gray-100 shadow-lg">
-          <ProductImageComponent productImages={selectedVariant?.images?.length > 0 ? selectedVariant?.images : images} />
+          <ProductImageComponent productImages={images} />
         </div>
 
         <div className="space-y-10">
