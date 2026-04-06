@@ -32,7 +32,6 @@ const Header: React.FC<HeaderProps> = () => {
       </a>
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 text-gray-600 border-r pr-4">
-          <User size={20} />
           {isAuthenticated ? (
             <>
               <span className="font-medium">Daniel Arenas</span>
