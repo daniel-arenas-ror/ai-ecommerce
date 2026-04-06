@@ -50,7 +50,7 @@ const ProductDetail: React.FC = () => {
 
     console.log("Matched Variant:", matchedVariant);
 
-    if(hasSelections){
+    if(hasSelections && matchedVariant && matchedVariant?.images?.length > 0){
       setImages(matchedVariant?.images);
     }
 
