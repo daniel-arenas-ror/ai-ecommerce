@@ -5,16 +5,30 @@ import App from './App.tsx'
 
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 import { ApolloProvider } from "@apollo/client/react";
+import { SetContextLink } from "@apollo/client/link/context";
 
 import { AuthProvider } from './context/AuthContext.tsx'
 import { CartProvider } from './context/CartContext.tsx'
 import { CompanyProvider } from './context/CompanyContext.tsx'
 
+const authLink = new SetContextLink(({ headers }) => {
+  const token = localStorage.getItem("token");
+
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
+const httpLink = new HttpLink({
+  uri: import.meta.env.VITE_BACKEND_URL + '/graphql',
+  credentials: 'include',
+})
+
 const client = new ApolloClient({
-  link: new HttpLink({
-    uri: import.meta.env.VITE_BACKEND_URL + '/graphql',
-    credentials: 'include',
-  }),
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
