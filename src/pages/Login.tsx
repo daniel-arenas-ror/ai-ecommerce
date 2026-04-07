@@ -33,7 +33,7 @@ const Login: React.FC = () => {
       await verifyOTP(loginValue, code).then((response) => {
         login(response.token, response.user)
 
-        //  window.location.href = '/dashboard'; // Redirect on success
+        window.location.href = '/'; // Redirect on success
       })
     } catch (error) {
       console.error("Invalid code", error);

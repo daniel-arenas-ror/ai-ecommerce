@@ -11,7 +11,8 @@ interface AuthContextType {
 interface LeadType {
   id: number,
   email: string,
-  phone: string
+  phone: string,
+  name?: string
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

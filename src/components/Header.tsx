@@ -12,7 +12,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, lead } = useAuth();
   const { items, toggleCart } = useCart();
   const { company } = useCompany();
   const cartLength = items.length;
@@ -34,9 +34,8 @@ const Header: React.FC<HeaderProps> = () => {
         <div className="flex items-center gap-2 text-gray-600 border-r pr-4">
           {isAuthenticated ? (
             <>
-              <span className="font-medium">Daniel Arenas</span>
-              <a href="/orders" className="ml-2 hover:text-blue-500">My Orders</a>
-              <a href="/profile" className="ml-2 hover:text-blue-500">Profile</a>
+              <span className="font-medium">¡Hola! {lead?.name}</span>
+              <a href="/orders" className="ml-2 hover:text-blue-500">Mis pedidos</a>
               <button onClick={logout} className="ml-2 hover:text-blue-500">Logout</button>
             </>
           ) : (
