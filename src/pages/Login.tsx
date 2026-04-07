@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { requestOTP, verifyOTP } from '../api/repositories/auth'
 import { useCompany } from '../context/CompanyContext';
+import { useAuth } from '../context/AuthContext';
 type AuthStep = 'IDENTIFIER' | 'OTP';
 
 const Login: React.FC = () => {
   const [step, setStep] = useState<AuthStep>('IDENTIFIER');
-  const [login, setLogin] = useState(''); // email or phone
+  const [loginValue, setLoginValue] = useState(''); // email or phone
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
   const { company } = useCompany();
+  const { login } = useAuth();
 
   const handleRequestCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await requestOTP(login, company?.id).then(() => {
+      await requestOTP(loginValue, company?.id).then(() => {
         setStep('OTP');
       })
     } catch (error) {
@@ -28,12 +30,10 @@ const Login: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await verifyOTP(login, code).then((response) => {
-        console.log(response)
-        //if (data.token) {
-        //  localStorage.setItem('token', data.token);
+      await verifyOTP(loginValue, code).then((response) => {
+        login(response.token, response.user)
+
         //  window.location.href = '/dashboard'; // Redirect on success
-        //}
       })
     } catch (error) {
       console.error("Invalid code", error);
@@ -60,8 +60,8 @@ const Login: React.FC = () => {
               type="text"
               placeholder="Email or Phone Number"
               className="w-full p-2 border rounded"
-              value={login}
-              onChange={(e) => setLogin(e.target.value)}
+              value={loginValue}
+              onChange={(e) => setLoginValue(e.target.value)}
               required
             />
             <button 
@@ -73,7 +73,7 @@ const Login: React.FC = () => {
           </form>
         ) : (
           <form onSubmit={handleVerifyCode} className="space-y-4">
-            <p className="text-sm text-gray-600">Enter the 6-digit code sent to {login}</p>
+            <p className="text-sm text-gray-600">Enter the 6-digit code sent to {loginValue}</p>
             <input
               type="text"
               placeholder="000000"
