@@ -14,7 +14,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await requestOTP(login).then(() => {
+      await requestOTP(login, company?.id).then(() => {
         setStep('OTP');
       })
     } catch (error) {
