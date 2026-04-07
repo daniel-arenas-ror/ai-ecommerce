@@ -11,35 +11,36 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { company } = useCompany();
   const { login } = useAuth();
+  const [error, setError] = useState<string | null>(null);
 
   const handleRequestCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      await requestOTP(loginValue, company?.id).then(() => {
+    setError(null);
+
+    await requestOTP(loginValue, company?.id)
+      .then(() => {
         setStep('OTP');
+        setLoading(false);
       })
-    } catch (error) {
-      console.error("Error requesting code", error);
-    } finally {
-      setLoading(false);
-    }
+      .catch((error) => {
+        setError(error?.response?.data?.error || 'Something went wrong. Please try again.');
+        setLoading(false);
+      })
   };
 
   const handleVerifyCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      await verifyOTP(loginValue, code).then((response) => {
-        login(response.token, response.user)
 
-        window.location.href = '/'; // Redirect on success
-      })
-    } catch (error) {
-      console.error("Invalid code", error);
-    } finally {
+    await verifyOTP(loginValue, code).then((response) => {
+      login(response.token, response.user)
+      window.location.href = '/'; // Redirect on success
+    }).catch((error) => {
+      setError(error?.response?.data?.error || 'Something went wrong. Please try again.');
+      setCode('');
       setLoading(false);
-    }
+    })
   };
 
   return (
@@ -53,6 +54,17 @@ const Login: React.FC = () => {
             loading="lazy"
           />
         </div>
+
+        {error && (
+          <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg animate-pulse">
+            <div className="flex items-center">
+              <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              <span>{error}</span>
+            </div>
+          </div>
+        )}
 
         {step === 'IDENTIFIER' ? (
           <form onSubmit={handleRequestCode} className="space-y-4">
