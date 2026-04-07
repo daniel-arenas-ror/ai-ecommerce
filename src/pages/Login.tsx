@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { requestOTP, verifyOTP } from '../api/repositories/auth'
+import { useCompany } from '../context/CompanyContext';
 type AuthStep = 'IDENTIFIER' | 'OTP';
 
 const Login: React.FC = () => {
@@ -7,12 +8,15 @@ const Login: React.FC = () => {
   const [login, setLogin] = useState(''); // email or phone
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
+  const { company } = useCompany();
 
   const handleRequestCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await requestOTP(login).then()
+      const response = await requestOTP(login).then(() => {
+        setStep('OTP');
+      })
     } catch (error) {
       console.error("Error requesting code", error);
     } finally {
@@ -40,9 +44,16 @@ const Login: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">
-        <h2 className="text-2xl font-bold text-center">Login to your Store</h2>
-        
+      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">        
+        <div className="flex justify-center pb-2">
+          <img
+            src={company?.iconUrl}
+            alt={company?.name}
+            className="h-12 w-auto object-contain"
+            loading="lazy"
+          />
+        </div>
+
         {step === 'IDENTIFIER' ? (
           <form onSubmit={handleRequestCode} className="space-y-4">
             <input
