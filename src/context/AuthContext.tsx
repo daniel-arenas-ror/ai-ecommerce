@@ -17,17 +17,23 @@ interface LeadType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [lead, setLead] = useState<LeadType>();
+  const [lead, setLead] = useState<LeadType>(() => {
+    const saved = localStorage.getItem('lead');
+    return saved ? JSON.parse(saved) : undefined;
+  });
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
 
   const login = (newToken: string, lead: LeadType) => {
     localStorage.setItem('token', newToken);
+    localStorage.setItem('lead', JSON.stringify(lead));
+
     setToken(newToken);
     setLead(lead)
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('lead');
     setToken(null);
   };
 
