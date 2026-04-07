@@ -10,5 +10,5 @@ export const requestOTP = (login: string): Promise<void> => {
 }
 
 export const verifyOTP = (login: string, code: string): Promise<void> => {
-  return connector.post(`/api/v1/auth/verify_otp`, { login }) as Promise<void>;
+  return connector.post(`/api/v1/auth/verify_otp`, { login, code }) as Promise<void>;
 }
