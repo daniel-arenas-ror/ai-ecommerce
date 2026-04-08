@@ -32,7 +32,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const [addToCart] = useMutation(ADD_TO_CART);
+  const [addToCart] = useMutation(ADD_TO_CART, {
+    onCompleted: (data) => {
+      console.log('Successfully added to cart:', data);
+    },
+    onError: (error) => {
+      console.error('Error adding to cart:', error);
+    }
+  });
   const [removeToCart] = useMutation(REMOVE_TO_CART);
 
   const addItem = (variant: variant, amount: number = 1) => {
