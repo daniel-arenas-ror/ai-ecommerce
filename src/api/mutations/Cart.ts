@@ -11,6 +11,10 @@ export const ADD_TO_CART = gql`
       cartItems {
         id
         quantity
+        totalCents
+        subTotalCents
+        formattedTotal
+        formattedSubTotal
         variant {
           id
           name
@@ -32,6 +36,10 @@ export const REMOVE_TO_CART = gql`
       cartItems {
         id
         quantity
+        totalCents
+        subTotalCents
+        formattedTotal
+        formattedSubTotal
         variant {
           id
           name
