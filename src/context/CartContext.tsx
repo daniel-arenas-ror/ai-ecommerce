@@ -2,11 +2,10 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { variant } from '../types/product';
 import { useMutation } from '@apollo/client/react';
 import { ADD_TO_CART, REMOVE_TO_CART } from '../api/mutations/Cart'
-import type { Cart, CartItem } from '../types/cart'
+import type { Cart } from '../types/cart'
 
 interface CartContextType {
   cart: Cart | undefined;
-  items: CartItem[];
   addItem: (variant: variant) => void;
   removeItem: (variant: variant) => void;
   clearCart: () => void;
@@ -19,15 +18,14 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [cart, setCart] = useState<Cart>()
-  const [items, setItems] = useState<CartItem[]>(() => {
+  const [cart, setCart] = useState<Cart | undefined>(() => {
     const saved = localStorage.getItem('cart');
-    return saved ? JSON.parse(saved) : [];
-  });
+    return saved ? JSON.parse(saved) : [];    
+  })
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(items));
-  }, [items]);
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   const [addToCart] = useMutation(ADD_TO_CART, {
     onCompleted: (data) => {
@@ -41,7 +39,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [removeToCart] = useMutation(REMOVE_TO_CART, {
     onCompleted: (data) => {
       console.log('Successfully removed to cart:', data);
-      setCart(data.addToCart)
+      setCart(data.removeToCart)
     },
     onError: (error) => {
       console.error('Error adding to cart:', error);
@@ -58,7 +56,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeToCart({ variables: { variantId: variant.id, quantity: amount } });
   };
 
-  const clearCart = () => setItems([]);
+  const clearCart = () => setCart(undefined);
 
   const toggleCart = () => {
     setIsOpen(!isOpen)
@@ -66,11 +64,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const value: CartContextType = {
     cart,
-    items,
     addItem,
     removeItem,
     clearCart,
-    itemsCount: items.length,
+    itemsCount: cart?.cartItems?.length || 0,
     isOpen,
     toggleCart
   };

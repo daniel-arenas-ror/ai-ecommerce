@@ -18,7 +18,7 @@ const CartDrawer = () => {
       
       <div className="absolute inset-y-0 right-0 max-w-sm w-full bg-white shadow-xl flex flex-col">
         <div className="p-4 border-b flex justify-between items-center bg-gray-50">
-          <h2 className="text-xl font-bold">Tu Carrito ({cart?.cartItems?.length})</h2>
+          <h2 className="text-xl font-bold">Tu Carrito ({cart?.cartItems?.length || 0})</h2>
           <button onClick={toggleCart} className="p-2 hover:bg-gray-200 rounded-full">
             <X size={24} />
           </button>
