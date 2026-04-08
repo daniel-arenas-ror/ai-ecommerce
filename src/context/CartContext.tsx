@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { variant } from '../types/product';
+import { useMutation } from '@apollo/client/react';
+import { ADD_TO_CART, REMOVE_TO_CART } from '../api/mutations/Cart'
 
 interface CartContextType {
   items: CartItem[];
@@ -30,9 +32,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addItem = (variant: variant, amount: number = 1) => {
+  const [addToCart] = useMutation(ADD_TO_CART);
+  const [removeToCart] = useMutation(REMOVE_TO_CART);
 
+  const addItem = (variant: variant, amount: number = 1) => {
     console.log('Adding to cart:', variant, 'Amount:', amount);
+
+    addToCart({ variables: { variantId: variant.id, quantity: amount } });
 
     setItems((prev) => {
       const existingItem = prev.find((item) => item.variantId === variant.id);
@@ -50,6 +56,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const removeItem = (variant: variant, amount: number = 1) => {
+    removeToCart({ variables: { variantId: variant.id, quantity: amount } });
+
     setItems((prev) => {
       const existingItem = prev.find((item) => item.variantId === variant.id);
 
