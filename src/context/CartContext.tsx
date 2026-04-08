@@ -2,8 +2,10 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { variant } from '../types/product';
 import { useMutation } from '@apollo/client/react';
 import { ADD_TO_CART, REMOVE_TO_CART } from '../api/mutations/Cart'
+import type { Cart, CartItem } from '../types/cart'
 
 interface CartContextType {
+  cart: Cart | undefined;
   items: CartItem[];
   addItem: (variant: variant) => void;
   removeItem: (variant: variant) => void;
@@ -13,16 +15,11 @@ interface CartContextType {
   toggleCart: () => void;
 }
 
-interface CartItem {
-  variantId: string | number;
-  quantity: number;
-  variant: variant;
-}
-
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [cart, setCart] = useState<Cart>()
   const [items, setItems] = useState<CartItem[]>(() => {
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
@@ -35,51 +32,30 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [addToCart] = useMutation(ADD_TO_CART, {
     onCompleted: (data) => {
       console.log('Successfully added to cart:', data);
+      setCart(data.addToCart)
     },
     onError: (error) => {
       console.error('Error adding to cart:', error);
     }
   });
-  const [removeToCart] = useMutation(REMOVE_TO_CART);
+  const [removeToCart] = useMutation(REMOVE_TO_CART, {
+    onCompleted: (data) => {
+      console.log('Successfully removed to cart:', data);
+      setCart(data.addToCart)
+    },
+    onError: (error) => {
+      console.error('Error adding to cart:', error);
+    }
+  });
 
   const addItem = (variant: variant, amount: number = 1) => {
     console.log('Adding to cart:', variant, 'Amount:', amount);
 
     addToCart({ variables: { variantId: variant.id, quantity: amount } });
-
-    setItems((prev) => {
-      const existingItem = prev.find((item) => item.variantId === variant.id);
-
-      if (existingItem) {
-        return prev.map((item) =>
-          item.variantId === variant.id
-            ? { ...item, quantity: item.quantity + amount }
-            : item
-        );
-      }
-
-      return [...prev, { variantId: variant.id, quantity: amount, variant }];
-    });
   };
 
   const removeItem = (variant: variant, amount: number = 1) => {
     removeToCart({ variables: { variantId: variant.id, quantity: amount } });
-
-    setItems((prev) => {
-      const existingItem = prev.find((item) => item.variantId === variant.id);
-
-      if (!existingItem) return prev;
-
-      if (existingItem.quantity > amount) {
-        return prev.map((item) =>
-          item.variantId === variant.id
-            ? { ...item, quantity: item.quantity - amount }
-            : item
-        );
-      }
-
-      return prev.filter((item) => item.variantId !== variant.id);
-    });
   };
 
   const clearCart = () => setItems([]);
@@ -89,6 +65,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const value: CartContextType = {
+    cart,
     items,
     addItem,
     removeItem,

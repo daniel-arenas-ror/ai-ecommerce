@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingCart, User } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { motion, useAnimation } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -13,9 +13,9 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = () => {
   const { isAuthenticated, logout, lead } = useAuth();
-  const { items, toggleCart } = useCart();
+  const { cart, toggleCart } = useCart();
   const { company } = useCompany();
-  const cartLength = items.length;
+  const cartLength = cart?.cartItems?.length || 0;
   const controls = useAnimation();
 
   React.useEffect(() => {

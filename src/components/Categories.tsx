@@ -32,7 +32,7 @@ const Categories: React.FC = () => {
   return (
     <nav
       className={`
-        sticky top-0 z-[100] w-full flex items-center justify-center space-x-8 border-b border-gray-100 bg-white/95 backdrop-blur-sm transition-all duration-500 ease-in-out
+        sticky top-0 z-[50] w-full flex items-center justify-center space-x-8 border-b border-gray-100 bg-white/95 backdrop-blur-sm transition-all duration-500 ease-in-out
         ${isScrolled ? 'h-24 py-6 px-10' : 'h-16 py-4 px-6'}
       `}
     >

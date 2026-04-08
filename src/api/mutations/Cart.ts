@@ -19,6 +19,14 @@ export const ADD_TO_CART = gql`
           id
           name
           sku
+          formattedPrice
+          images{
+            id
+            url
+            thumbUrl
+            mediumUrl
+            largeUrl
+          }
         }
       }
     }
@@ -44,6 +52,14 @@ export const REMOVE_TO_CART = gql`
           id
           name
           sku
+          formattedPrice
+          images{
+            id
+            url
+            thumbUrl
+            mediumUrl
+            largeUrl
+          }
         }
       }
     }
