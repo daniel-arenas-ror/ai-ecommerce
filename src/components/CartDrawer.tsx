@@ -28,7 +28,7 @@ const CartDrawer = () => {
           {cart?.cartItems?.length === 0 ? (
             <p className="text-center text-gray-500 mt-10">El carrito está vacío</p>
           ) : (
-            cart?.cartItems.map((item, index) => (
+            cart?.cartItems?.map((item, index) => (
               <div key={`${item.variant.id}-${index}`} className="flex gap-4 border-b pb-4">
                 <img src={item.variant?.images[0]?.mediumUrl} className="w-16 h-16 object-cover rounded" alt={item.variant.sku} />
                 <div className="flex-1">

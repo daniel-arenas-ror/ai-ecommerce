@@ -36,6 +36,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Error adding to cart:', error);
     }
   });
+
   const [removeToCart] = useMutation(REMOVE_TO_CART, {
     onCompleted: (data) => {
       console.log('Successfully removed to cart:', data);
