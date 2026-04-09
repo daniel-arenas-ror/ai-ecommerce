@@ -7,7 +7,7 @@ import type { Cart } from '../types/cart'
 interface CartContextType {
   setCart: React.Dispatch<React.SetStateAction<Cart | undefined>>;
   cart: Cart | undefined;
-  addItem: (variant: variant) => void;
+  addItem: (variant: variant, amount: number) => void;
   removeItem: (variant: variant) => void;
   clearCart: () => void;
   itemsCount: number;
