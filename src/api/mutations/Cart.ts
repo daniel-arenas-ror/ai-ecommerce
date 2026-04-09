@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const ADD_TO_CART = gql`
-  mutation AddToCart($variantId: ID!, $quantity: Int!) {
-    addToCart(input: { variantId: $variantId, quantity: $quantity }) {
+  mutation AddToCart($variantId: ID!, $companyId: ID!, $quantity: Int!) {
+    addToCart(input: { variantId: $variantId, companyId: $companyId, quantity: $quantity }) {
       id
       totalCents
       subTotalCents
@@ -34,8 +34,8 @@ export const ADD_TO_CART = gql`
 `;
 
 export const REMOVE_TO_CART = gql`
-  mutation removeToCart($variantId: ID!, $quantity: Int!) {
-    removeToCart(input: { variantId: $variantId, quantity: $quantity }) {
+  mutation removeToCart($variantId: ID!, $companyId: ID!, $quantity: Int!) {
+    removeToCart(input: { variantId: $variantId, quantity: $quantity, companyId: $companyId }) {
       id
       totalCents
       subTotalCents

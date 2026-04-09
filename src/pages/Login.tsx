@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { requestOTP, verifyOTP } from '../api/repositories/auth'
 import { useCompany } from '../context/CompanyContext';
 import { useAuth } from '../context/AuthContext';
+import { GET_CART_DATA } from '../api/queries/cart';
+import { useQuery } from "@apollo/client/react";
+
 type AuthStep = 'IDENTIFIER' | 'OTP';
 
 const Login: React.FC = () => {
@@ -35,6 +38,7 @@ const Login: React.FC = () => {
 
     await verifyOTP(loginValue, code).then((response) => {
       login(response.token, response.user)
+
       window.location.href = '/'; // Redirect on success
     }).catch((error) => {
       setError(error?.response?.data?.error || 'Something went wrong. Please try again.');
