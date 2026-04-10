@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_CART_DATA = gql`
-  query getCartData {
-    cart {
+  query getCartData($companyId: ID!) {
+    cart (companyId: $companyId){
       id
       totalCents
       subTotalCents

@@ -26,7 +26,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   })
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    if(cart) {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
   }, [cart]);
 
   const [addToCart] = useMutation(ADD_TO_CART, {
@@ -59,7 +61,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeToCart({ variables: { variantId: variant.id, quantity: amount, companyId } });
   };
 
-  const clearCart = () => setCart(undefined);
+  const clearCart = () => {
+    setCart(undefined);
+  };
 
   const toggleCart = () => {
     setIsOpen(!isOpen)

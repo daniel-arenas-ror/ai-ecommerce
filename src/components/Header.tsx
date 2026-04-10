@@ -13,7 +13,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = () => {
   const { isAuthenticated, logout, lead } = useAuth();
-  const { cart, toggleCart } = useCart();
+  const { cart, toggleCart, clearCart } = useCart();
   const { company } = useCompany();
   const cartLength = cart?.cartItems?.length || 0;
   const controls = useAnimation();
@@ -24,6 +24,11 @@ const Header: React.FC<HeaderProps> = () => {
       transition: { duration: 0.3 }
     });
   }, [cartLength, controls]);
+
+  const runLogout = () => {
+    clearCart()
+    logout()
+  }
 
   return (
     <header className="bg-white shadow-sm p-4 flex justify-between items-center z-10">
@@ -36,7 +41,7 @@ const Header: React.FC<HeaderProps> = () => {
             <>
               <span className="font-medium">¡Hola! {lead?.name}</span>
               <a href="/orders" className="ml-2 hover:text-blue-500">Mis pedidos</a>
-              <button onClick={logout} className="ml-2 hover:text-blue-500">Logout</button>
+              <button onClick={runLogout} className="ml-2 hover:text-blue-500">Logout</button>
             </>
           ) : (
             <Link to="/login" className="bg-blue-600 text-white px-4 py-2 rounded">Login</Link>

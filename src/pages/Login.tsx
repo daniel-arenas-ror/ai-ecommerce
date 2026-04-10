@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { requestOTP, verifyOTP } from '../api/repositories/auth'
 import { useCompany } from '../context/CompanyContext';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import { GET_CART_DATA } from '../api/queries/cart';
-import { useQuery } from "@apollo/client/react";
+import { useLazyQuery } from "@apollo/client/react";
 
 type AuthStep = 'IDENTIFIER' | 'OTP';
 
@@ -14,6 +15,8 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { company } = useCompany();
   const { login } = useAuth();
+  const { setCart } = useCart();
+  const [getCart] = useLazyQuery(GET_CART_DATA);
   const [error, setError] = useState<string | null>(null);
 
   const handleRequestCode = async (e: React.FormEvent) => {
@@ -36,8 +39,13 @@ const Login: React.FC = () => {
     e.preventDefault();
     setLoading(true);
 
-    await verifyOTP(loginValue, code).then((response) => {
-      login(response.token, response.user)
+    await verifyOTP(loginValue, code).then(async (response) => {
+      login(response.token, response.user);
+
+      const cartResult = await getCart({ variables: { companyId: company?.id } });
+      if (cartResult.data?.cart) {
+        setCart(cartResult.data.cart);
+      }
 
       window.location.href = '/'; // Redirect on success
     }).catch((error) => {
