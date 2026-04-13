@@ -1,19 +1,21 @@
 import React from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
+import { useCart } from '../context/CartContext'
 
 const Checkout: React.FC = () => {
+  const {
+    cart
+  } = useCart();
+
   return (
-<div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white">
       <div className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-[1fr_420px]">
-        
-        {/* --- LEFT COLUMN: Forms --- */}
         <div className="p-6 md:p-12 lg:pr-16 border-r border-gray-100">
           
           {/* 1. Contact Section */}
           <section className="mb-10">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold text-gray-900">Contacto</h2>
-              <button className="text-sm text-blue-600 underline">Iniciar sesión</button>
             </div>
             <input 
               type="email" 
@@ -26,7 +28,6 @@ const Checkout: React.FC = () => {
             </label>
           </section>
 
-          {/* 2. Delivery Section */}
           <section className="mb-10">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Entrega</h2>
             <div className="space-y-4">
@@ -90,46 +91,39 @@ const Checkout: React.FC = () => {
         <aside className="bg-gray-50/80 p-6 md:p-10 lg:sticky lg:top-0 lg:h-screen">
           <div className="space-y-6">
             {/* Item 1 */}
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <div className="w-16 h-16 bg-white border border-gray-200 rounded-lg overflow-hidden">
-                  <img src="https://via.placeholder.com/64" alt="Product" className="object-cover" />
-                </div>
-                <span className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">1</span>
-              </div>
-              <div className="flex-1">
-                <h3 className="text-sm font-medium text-gray-900">Oslo Gris - Mujer</h3>
-                <p className="text-xs text-gray-500">US 5 / 35</p>
-              </div>
-              <span className="text-sm font-medium">$ 249.900,00</span>
-            </div>
 
-            {/* Item 2 */}
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <div className="w-16 h-16 bg-white border border-gray-200 rounded-lg overflow-hidden">
-                  <img src="https://via.placeholder.com/64" alt="Product" className="object-cover" />
+            {cart?.cartItems?.length === 0 ? (
+              <p className="text-center text-gray-500 mt-10">El carrito está vacío</p>
+            ) : (
+              cart?.cartItems?.map((item, index) => (
+              <div key={`${item.variant.id}-${index}`} className="flex items-center gap-4">
+                <div className="relative">
+                  <div className="w-16 h-16 bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <img src={item.variant?.images[0]?.mediumUrl} alt="Product" className="object-cover" />
+                  </div>
+                  <span className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">{item.quantity}</span>
                 </div>
-                <span className="absolute -top-2 -right-2 bg-gray-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">2</span>
+                <div className="flex-1">
+                  <h3 className="text-sm font-medium text-gray-900">{item.variant.name}</h3>
+                  <p className="text-xs text-gray-500">US 5 / 35</p>
+                </div>
+                <span className="text-sm font-medium">{item.variant.formattedPrice}</span>
               </div>
-              <div className="flex-1">
-                <h3 className="text-sm font-medium text-gray-900">Oslo Negro - Mujer</h3>
-                <p className="text-xs text-gray-500">US 7 / 37</p>
-              </div>
-              <span className="text-sm font-medium">$ 499.800,00</span>
-            </div>
+              ))
+            )}
 
             {/* Discount Code */}
-            <div className="flex gap-2 pt-4 border-t border-gray-200">
+            { false && <div className="flex gap-2 pt-4 border-t border-gray-200">
               <input type="text" placeholder="Código de descuento o tarjeta de regalo" className="flex-1 p-3 border border-gray-300 rounded-md text-sm outline-none" />
               <button className="bg-gray-100 px-4 py-2 rounded-md text-sm font-medium text-gray-500">Aplicar</button>
             </div>
+            }
 
             {/* Calculations */}
             <div className="space-y-2 pt-4">
               <div className="flex justify-between text-sm">
-                <span>Subtotal · 3 artículos</span>
-                <span className="font-medium">$ 749.700,00</span>
+                <span>Subtotal · {cart?.cartItems?.length} artículos</span>
+                <span className="font-medium">{cart?.formattedSubTotal}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="flex items-center gap-1">Envío <HelpCircle size={14} className="text-gray-400" /></span>
@@ -139,7 +133,7 @@ const Checkout: React.FC = () => {
                 <span className="text-lg font-bold">Total</span>
                 <div className="text-right">
                   <span className="text-xs text-gray-500 mr-2">COP</span>
-                  <span className="text-2xl font-black">$ 749.700,00</span>
+                  <span className="text-2xl font-black">{cart?.formattedTotal}</span>
                 </div>
               </div>
             </div>
