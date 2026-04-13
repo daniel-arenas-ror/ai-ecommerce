@@ -1,6 +1,7 @@
 import { X, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext'
+import { href } from 'react-router-dom';
 
 const CartDrawer = () => {
   const {
@@ -11,6 +12,10 @@ const CartDrawer = () => {
   } = useCart();
 
   if (!isOpen) return null;
+
+  const goToCheckout = () => {
+    window.location.href = "/checkout"
+  }
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
@@ -61,9 +66,9 @@ const CartDrawer = () => {
           <motion.button
             className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors"
             whileTap={{ scale: 0.95 }}
-            onClick={() => console.log("Go to purchase Order")}
+            onClick={() => goToCheckout()}
           >
-            Finalizar Compra
+            Comprar
           </motion.button>
         </div>
       </div>
