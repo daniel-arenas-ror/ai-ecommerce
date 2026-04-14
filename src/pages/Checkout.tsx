@@ -1,11 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useLazyQuery, useMutation } from "@apollo/client/react";
+import PaymentModal from '../components/payment/PaymentModal';
 import { ChevronDown, HelpCircle } from 'lucide-react';
-import { useCart } from '../context/CartContext'
+import { useCart } from '../context/CartContext';
+import { CREATE_ORDER_FROM_CART, CREATE_PAYMENT_INTENT } from '../api/mutations/payment';
+import { GET_PAYMENT_CONFIG } from '../api/queries/payment';
 
 const Checkout: React.FC = () => {
   const {
     cart
   } = useCart();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [paymentAdapter, setPaymentAdapter] = useState<string | null>(null);
+  const [paymentKey, setPaymentKey] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const [createOrder] = useMutation(CREATE_ORDER_FROM_CART);
+  const [createPaymentIntent] = useMutation(CREATE_PAYMENT_INTENT);
+  const [getPaymentConfig] = useLazyQuery(GET_PAYMENT_CONFIG);
+
+  const handleContinue = async () => {
+    if (!cart?.id) return;
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // 1. Copy cart → order
+      const { data: orderData } = await createOrder({
+        variables: { cartId: cart.id },
+      });
+      const newOrderId = orderData.createOrderFromCart.id;
+      setOrderId(newOrderId);
+
+      // 2. Fetch payment config (adapter + publishable key)
+      const { data: configData } = await getPaymentConfig();
+      const { adapter, key } = configData.paymentConfig;
+      setPaymentAdapter(adapter);
+      setPaymentKey(key);
+
+      // 3. Create PaymentIntent → get clientSecret
+      const { data: intentData } = await createPaymentIntent({
+        variables: { orderId: newOrderId },
+      });
+      setClientSecret(intentData.createPaymentIntent.clientSecret);
+
+      // 4. Open modal
+      setModalOpen(true);
+    } catch (err: any) {
+      setError('Ocurrió un error al procesar tu pedido. Intenta de nuevo.');
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -75,10 +125,18 @@ const Checkout: React.FC = () => {
           </section>
 
           {/* 4. Payment & Footer */}
-          <button className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-4 rounded-md transition-all">
-            Continuar
+          <button
+            onClick={handleContinue}
+            disabled={isLoading}
+            className="w-full bg-blue-700 hover:bg-blue-800 disabled:bg-blue-300 text-white font-bold py-4 rounded-md transition-all"
+          >
+            {isLoading ? 'Procesando...' : 'Continuar'}
           </button>
-          
+
+          {error && (
+            <p className="mt-3 text-sm text-red-600 text-center">{error}</p>
+          )}
+
           <footer className="mt-12 flex gap-4 text-[11px] text-blue-600 underline">
             <a href="#">Política de reembolso</a>
             <a href="#">Envío</a>
@@ -140,6 +198,17 @@ const Checkout: React.FC = () => {
           </div>
         </aside>
 
+
+        {modalOpen && orderId && clientSecret && paymentAdapter && paymentKey && (
+          <PaymentModal
+            isOpen={modalOpen}
+            onClose={() => setModalOpen(false)}
+            adapter={paymentAdapter}
+            paymentKey={paymentKey}
+            orderId={orderId}
+            clientSecret={clientSecret}
+          />
+        )}
       </div>
     </div>
   )
