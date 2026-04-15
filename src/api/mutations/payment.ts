@@ -18,8 +18,8 @@ export const CREATE_PAYMENT_INTENT = gql`
 `;
 
 export const CHECKOUT = gql`
-  mutation Checkout {
-    checkout {
+  mutation Checkout($companyId: ID!){
+    checkout(input: {companyId: $companyId}) {
       paymentIntent {
         adapter
         publicKey

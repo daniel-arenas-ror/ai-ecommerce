@@ -17,19 +17,13 @@ const Checkout: React.FC = () => {
   const [paymentKey, setPaymentKey] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
 
   const [createOrder] = useMutation(CREATE_ORDER_FROM_CART);
   const [createPaymentIntent] = useMutation(CREATE_PAYMENT_INTENT);
   const [getPaymentConfig] = useLazyQuery(GET_PAYMENT_CONFIG);
-  const [checkout] = useMutation(CHECKOUT);
-
-  const handleContinue = async () => {
-    if (!cart?.id) return;
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const { data } = await checkout({ variables: { cartId: cart.id } });
+  const [Startcheckout] = useMutation(CHECKOUT, {
+    onCompleted: (data) => {
       const { adapter, publicKey, clientSecret, orderId } = data.checkout.paymentIntent;
 
       setPaymentAdapter(adapter);
@@ -37,12 +31,20 @@ const Checkout: React.FC = () => {
       setClientSecret(clientSecret);
       setOrderId(orderId);
       setModalOpen(true);
-    } catch (err: any) {
-      setError('Ocurrió un error al procesar tu pedido. Intenta de nuevo.');
-      console.error(err);
-    } finally {
+
       setIsLoading(false);
+    },
+    onError: (data) => {
+      setError('Ocurrió un error al procesar tu pedido. Intenta de nuevo.');
     }
+  });
+
+  const handleContinue = async () => {
+    if (!cart?.id) return;
+    setIsLoading(true);
+    setError(null);
+
+    Startcheckout({variables: { companyId: companyId }});
   };
 
   return (
