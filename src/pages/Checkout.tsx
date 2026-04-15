@@ -3,7 +3,7 @@ import { useLazyQuery, useMutation } from "@apollo/client/react";
 import PaymentModal from '../components/payment/PaymentModal';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { CREATE_ORDER_FROM_CART, CREATE_PAYMENT_INTENT } from '../api/mutations/payment';
+import { CREATE_ORDER_FROM_CART, CREATE_PAYMENT_INTENT, CHECKOUT } from '../api/mutations/payment';
 import { GET_PAYMENT_CONFIG } from '../api/queries/payment';
 
 const Checkout: React.FC = () => {
@@ -21,6 +21,7 @@ const Checkout: React.FC = () => {
   const [createOrder] = useMutation(CREATE_ORDER_FROM_CART);
   const [createPaymentIntent] = useMutation(CREATE_PAYMENT_INTENT);
   const [getPaymentConfig] = useLazyQuery(GET_PAYMENT_CONFIG);
+  const [checkout] = useMutation(CHECKOUT);
 
   const handleContinue = async () => {
     if (!cart?.id) return;
@@ -28,26 +29,13 @@ const Checkout: React.FC = () => {
     setError(null);
 
     try {
-      // 1. Copy cart → order
-      const { data: orderData } = await createOrder({
-        variables: { cartId: cart.id },
-      });
-      const newOrderId = orderData.createOrderFromCart.id;
-      setOrderId(newOrderId);
+      const { data } = await checkout({ variables: { cartId: cart.id } });
+      const { adapter, publicKey, clientSecret, orderId } = data.checkout.paymentIntent;
 
-      // 2. Fetch payment config (adapter + publishable key)
-      const { data: configData } = await getPaymentConfig();
-      const { adapter, key } = configData.paymentConfig;
       setPaymentAdapter(adapter);
-      setPaymentKey(key);
-
-      // 3. Create PaymentIntent → get clientSecret
-      const { data: intentData } = await createPaymentIntent({
-        variables: { orderId: newOrderId },
-      });
-      setClientSecret(intentData.createPaymentIntent.clientSecret);
-
-      // 4. Open modal
+      setPaymentKey(publicKey);
+      setClientSecret(clientSecret);
+      setOrderId(orderId);
       setModalOpen(true);
     } catch (err: any) {
       setError('Ocurrió un error al procesar tu pedido. Intenta de nuevo.');

@@ -16,3 +16,17 @@ export const CREATE_PAYMENT_INTENT = gql`
     }
   }
 `;
+
+export const CHECKOUT = gql`
+  mutation Checkout {
+    checkout {
+      paymentIntent {
+        adapter
+        publicKey
+        clientSecret
+        orderId
+      }
+      errors
+    }
+  }
+`;
