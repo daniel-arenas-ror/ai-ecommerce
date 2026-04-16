@@ -4,8 +4,8 @@ import StripePaymentForm from './StripePaymentForm';
 interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  adapter: string;         // "STRIPE" | "PAYU" | ...
-  paymentKey: string;      // publishable key
+  adapter: string;
+  paymentKey: string;
   orderId: string;
   clientSecret: string;
 }
@@ -23,7 +23,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             publishableKey={paymentKey}
             clientSecret={clientSecret}
             orderId={orderId}
-            onSuccess={() => { /* redirect to success page */ }}
+            onSuccess={() => { window.location.href = `/success/order/${orderId}` }}
             onCancel={onClose}
           />
         );

@@ -36,6 +36,7 @@ const Checkout: React.FC = () => {
     },
     onError: (data) => {
       setError('Ocurrió un error al procesar tu pedido. Intenta de nuevo.');
+      setIsLoading(false);
     }
   });
 
