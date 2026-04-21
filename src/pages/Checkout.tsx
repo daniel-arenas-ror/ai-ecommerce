@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useLazyQuery, useMutation } from "@apollo/client/react";
+import { useMutation } from "@apollo/client/react";
 import PaymentModal from '../components/payment/PaymentModal';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { CREATE_ORDER_FROM_CART, CREATE_PAYMENT_INTENT, CHECKOUT } from '../api/mutations/payment';
-import { GET_PAYMENT_CONFIG } from '../api/queries/payment';
+import { CHECKOUT } from '../api/mutations/payment';
 
 const Checkout: React.FC = () => {
   const {
@@ -19,9 +18,6 @@ const Checkout: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const companyId = import.meta.env.VITE_COMPANNY_ID as string | undefined;
 
-  const [createOrder] = useMutation(CREATE_ORDER_FROM_CART);
-  const [createPaymentIntent] = useMutation(CREATE_PAYMENT_INTENT);
-  const [getPaymentConfig] = useLazyQuery(GET_PAYMENT_CONFIG);
   const [Startcheckout] = useMutation(CHECKOUT, {
     onCompleted: (data) => {
       const { adapter, publicKey, clientSecret, orderId } = data.checkout.paymentIntent;
