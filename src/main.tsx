@@ -10,14 +10,18 @@ import { SetContextLink } from "@apollo/client/link/context";
 import { AuthProvider } from './context/AuthContext.tsx'
 import { CartProvider } from './context/CartContext.tsx'
 import { CompanyProvider } from './context/CompanyContext.tsx'
+import { useSearchParams } from 'react-router-dom';
 
 const authLink = new SetContextLink(({ headers }) => {
   const token = localStorage.getItem("token");
+  const searchParams = new URLSearchParams(window.location.search);
+  const version = searchParams.get('version') || 'published';
 
   return {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : "",
+      'X-Company-Version': version,
     },
   };
 });
