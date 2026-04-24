@@ -34,8 +34,14 @@ const ProductCard: React.FC<ProductCardContainerProps> = ({
   const { company } = useCompany();
 
   // Determine which style to use
-  const cardStyle = explicitStyle || company?.productCardConfiguration || getCardStyleFromConfig(config);
+  const productCardConfiguration = company?.companyItemConfigurations.find((c) => c.name === 'ProductCardStyle')?.value
+
+  console.log(" productCardConfiguration ", productCardConfiguration)
+
+  const cardStyle = explicitStyle || productCardConfiguration || getCardStyleFromConfig(config);
   
+  console.log("cardStyle ", cardStyle)
+
   // Get the card component from factory
   const { component: CardComponent } = cardFactory(cardStyle);
 
