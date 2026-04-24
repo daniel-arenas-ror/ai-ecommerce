@@ -10,8 +10,11 @@ interface CategorySliderProps {
 export const CategorySection: React.FC<CategorySliderProps> = ({ category }) => {
   const [activeCategory, setActiveCategory] = useState(category.subCategories?.[0]?.slug);
 
+  console.log("category", category) 
+
   const filteredProducts = useMemo(() => {
-    return category.products?.filter(p => p.slug === activeCategory) || [];
+    //return category.products?.filter(p => p.slug === activeCategory) || [];
+    return category.products || [];
   }, [activeCategory]);
 
   return (
@@ -72,3 +75,5 @@ export const CategorySection: React.FC<CategorySliderProps> = ({ category }) => 
     </section>
   );
 };
+
+export default CategorySection;

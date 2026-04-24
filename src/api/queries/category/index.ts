@@ -33,3 +33,30 @@ export const GET_CATEGORIES_DATA = gql`
     }
   }
 `;
+
+export const GET_CATEGORY_SLIDER_DATA = gql`
+  query getCompanyCategory($companyId: ID!, $categorySlug: ID!) {
+    category(companyId: $companyId, categorySlug: $categorySlug) {
+      id
+      name
+      slug
+      subCategories {
+        id
+        name
+        slug
+      }
+      products {
+        id
+        name
+        slug
+        allImages {
+          id
+          url
+          thumbUrl
+          mediumUrl
+          largeUrl
+        }
+      }
+    }
+  }
+`;
