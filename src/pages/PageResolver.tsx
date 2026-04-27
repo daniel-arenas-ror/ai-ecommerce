@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
-import { useQuery, gql } from '@apollo/client';
-import DynamicRenderer from './DynamicRenderer';
+import { gql } from '@apollo/client';
+import DynamicRenderer from '../components/DynamicRenderer';
 
 const GET_PAGE_LAYOUT = gql`
   query GetPageLayout($path: String!, $version: String!) {
