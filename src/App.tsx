@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Category from './pages/Category';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
+import PageResolver from './pages/PageResolver';
 
 function App() {
   return (
@@ -29,8 +30,7 @@ function App() {
             <Route path="/success/order/:orderId" element={<OrderSuccess />} />
           </Route>
 
-          {/* 404 Page */}
-          <Route path="*" element={<div>Page not found</div>} />
+          <Route path="*" element={<PageResolver />} />
         </Route>
       </Routes>
     </BrowserRouter>
